@@ -43,6 +43,18 @@ function upsertJsonLd(id, data) {
   element.textContent = JSON.stringify(data)
 }
 
+function upsertHreflang(lang, href) {
+  const selector = `link[rel="alternate"][hreflang="${lang}"]`
+  let element = document.head.querySelector(selector)
+  if (!element) {
+    element = document.createElement('link')
+    element.setAttribute('rel', 'alternate')
+    element.setAttribute('hreflang', lang)
+    document.head.appendChild(element)
+  }
+  element.setAttribute('href', href)
+}
+
 function Seo({ page = 'home' }) {
   const { t, i18n } = useTranslation()
 
@@ -63,11 +75,18 @@ function Seo({ page = 'home' }) {
     document.title = title
     document.documentElement.lang = i18n.language
 
+    // Canonical URL — strip query strings and hash fragments
+    const canonicalUrl = `${window.location.origin}${window.location.pathname}`
+
     // Standard meta
     upsertMeta('description', description)
     upsertMeta('keywords', keywords)
     upsertMeta('robots', 'index, follow')
     upsertMeta('author', clinicInfo.name)
+
+    // OG locale — must be language_TERRITORY format
+    const ogLocaleMap = { en: 'en_IN', kn: 'kn_IN', hi: 'hi_IN' }
+    const ogLocale = ogLocaleMap[i18n.language] || 'en_IN'
 
     // Geo meta for local SEO
     upsertMeta('geo.region', 'IN-KA')
@@ -79,13 +98,24 @@ function Seo({ page = 'home' }) {
     upsertMeta('og:title', title, 'property')
     upsertMeta('og:description', description, 'property')
     upsertMeta('og:type', 'website', 'property')
-    upsertMeta('og:locale', i18n.language, 'property')
+    upsertMeta('og:locale', ogLocale, 'property')
     upsertMeta('og:site_name', clinicInfo.name, 'property')
-    upsertMeta('og:url', window.location.href, 'property')
+    upsertMeta('og:url', canonicalUrl, 'property')
     upsertMeta('og:image', `${window.location.origin}/logo.jpg`, 'property')
     upsertMeta('og:image:width', '512', 'property')
     upsertMeta('og:image:height', '512', 'property')
     upsertMeta('og:image:alt', `${clinicInfo.name} logo — Mind & ENT Health Care, Mangalore`, 'property')
+
+    // og:locale:alternate — declare non-active locales
+    document.head.querySelectorAll('meta[property="og:locale:alternate"]').forEach((el) => el.remove())
+    Object.entries(ogLocaleMap)
+      .filter(([lang]) => lang !== i18n.language)
+      .forEach(([, locale]) => {
+        const el = document.createElement('meta')
+        el.setAttribute('property', 'og:locale:alternate')
+        el.setAttribute('content', locale)
+        document.head.appendChild(el)
+      })
 
     // Twitter
     upsertMeta('twitter:card', 'summary_large_image', 'name')
@@ -95,7 +125,13 @@ function Seo({ page = 'home' }) {
     upsertMeta('twitter:image:alt', `${clinicInfo.name} logo — Mind & ENT Health Care, Mangalore`, 'name')
 
     // Canonical
-    upsertLink('canonical', window.location.href)
+    upsertLink('canonical', canonicalUrl)
+
+    // Hreflang — updated dynamically so /book page and language switches are correct
+    upsertHreflang('en', canonicalUrl)
+    upsertHreflang('kn', canonicalUrl)
+    upsertHreflang('hi', canonicalUrl)
+    upsertHreflang('x-default', canonicalUrl)
 
     // MedicalClinic schema (rich structured data)
     const clinicSchema = {
@@ -172,7 +208,7 @@ function Seo({ page = 'home' }) {
       '@context': 'https://schema.org',
       '@type': 'Physician',
       name: doctor.name,
-      medicalSpecialty: doctor.specialty === 'ENT' ? 'Otolaryngology' : 'Psychiatry',
+      medicalSpecialty: doctor.specialty === 'ENT' ? 'Otolaryngologic' : 'Psychiatric',
       qualification: doctor.qualification,
       worksFor: {
         '@type': 'MedicalClinic',
