@@ -21,3 +21,18 @@ description = "Route53 Hosted Zone ID for domain validation"
 type = string
 default = "" # ← replace with your actual hosted zone ID
 }
+
+variable "codestar_connection_arn" {
+  description = "ARN of the CodeStar connection for the repository"
+  type        = string
+}
+
+variable "repo_fullId" {
+  description = "Full repository ID for the CodeStar connection"
+  type        = string
+}
+
+variable "repo_branch" {
+  description = "Branch name for the CodeStar connection"
+  type        = string
+}
