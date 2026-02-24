@@ -268,7 +268,7 @@ function Seo({ page = 'home' }) {
             name: 'Which doctors are available at Indriya Clinics?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Dr Jaswin Dsouza (MD, ENT Specialist) and Dr Vinitha Precilla Dsouza (MD, Psychiatrist) are available at Indriya Clinics.',,
+              text: 'Dr Jaswin Dsouza (MD, ENT Specialist) and Dr Vinitha Precilla Dsouza (MD, Psychiatrist) are available at Indriya Clinics.',
             },
           },
           {
@@ -284,7 +284,7 @@ function Seo({ page = 'home' }) {
             name: 'Does Indriya Clinics treat anxiety and depression?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Yes. Dr Vinitha Precilla Dsouza (MD, Psychiatrist) at Indriya Clinics provides treatment for anxiety, depression, sleep disorders, stress, and other mental health conditions.',,
+              text: 'Yes. Dr Vinitha Precilla Dsouza (MD, Psychiatrist) at Indriya Clinics provides treatment for anxiety, depression, sleep disorders, stress, and other mental health conditions.',
             },
           },
           {
