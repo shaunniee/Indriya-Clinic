@@ -83,7 +83,7 @@ const resources = {
       seoDescription:
         'Indriya Clinics in Surathkal, Mangalore offers specialist ENT and Psychiatry services. Book appointments quickly via WhatsApp.',
       seoKeywords:
-        'Indriya Clinics, ENT doctor Mangalore, Psychiatry doctor Mangalore, Mind and ENT healthcare, Surathkal clinic, ENT specialist near me, psychiatrist Mangalore, ear nose throat doctor Surathkal, mental health clinic Mangalore, best ENT doctor Mangalore, anxiety treatment Mangalore, Dr Jaswin Dsouza ENT, Dr Vinitha Percilla Dsouza psychiatrist, clinic near Surathkal junction, MRPL road clinic',
+        'Indriya Clinics, ENT doctor Mangalore, Psychiatry doctor Mangalore, Mind and ENT healthcare, Surathkal clinic, ENT specialist near me, psychiatrist Mangalore, ear nose throat doctor Surathkal, mental health clinic Mangalore, best ENT doctor Mangalore, anxiety treatment Mangalore, Dr Jaswin Dsouza ENT, Dr Vinitha Precilla Dsouza psychiatrist, clinic near Surathkal junction, MRPL road clinic',
       notFoundText: 'The page you are looking for does not exist.',
       faqTitle: 'Frequently Asked Questions',
       faqSubtitle: 'Quick answers to common questions about our clinic',
@@ -96,7 +96,7 @@ const resources = {
       faq4Q: 'What are the clinic timings?',
       faq4A: 'Monday to Saturday, 9:00 AM to 8:00 PM. Closed on Sundays.',
       faq5Q: 'Which doctors are available?',
-      faq5A: 'Dr Jaswin Dsouza (MD, ENT Specialist) and Dr Vinitha Percilla Dsouza (MD, Psychiatrist).',
+      faq5A: 'Dr Jaswin Dsouza (MD, ENT Specialist) and Dr Vinitha Precilla Dsouza (MD, Psychiatrist).',,
     },
   },
   kn: {
@@ -193,7 +193,7 @@ const resources = {
       faq4Q: 'ಕ್ಲಿನಿಕ್ ಸಮಯ ಯಾವುದು?',
       faq4A: 'ಸೋಮವಾರ ಮತ್ತು ಶನಿವಾರ, ಬೆಳಿಗ್ಗೆ 9:00 ಯಿಂದ ರಾತ್ರಿ 8:00. ಭಾನುವಾರ ರಜೆ.',
       faq5Q: 'ಯಾವ ವೈದ್ಯರು ಲಭ್ಯ?',
-      faq5A: 'Dr Jaswin Dsouza (MD, ENT ತಜ್ಞ) ಮತ್ತು Dr Vinitha Percilla Dsouza (MD, ಮಾನಸಿಕ ಆರೈಕೆ ತಜ್ಞ).',
+      faq5A: 'Dr Jaswin Dsouza (MD, ENT ತಜ್ಞ) ಮತ್ತು Dr Vinitha Precilla Dsouza (MD, ಮಾನಸಿಕ ಆರೈಕೆ ತಜ್ಞ).',,
     },
   },
   hi: {
@@ -290,7 +290,7 @@ const resources = {
       faq4Q: 'क्लिनिक का समय क्या है?',
       faq4A: 'सोमवार से शनिवार, सुबह 9:00 से रात 8:00 बजे तक। रविवार को बंद।',
       faq5Q: 'कौन से डॉक्टर उपलब्ध हैं?',
-      faq5A: 'Dr Jaswin Dsouza (MD, ENT विशेषज्ञ) और Dr Vinitha Percilla Dsouza (MD, मनोरोग विशेषज्ञ)।',
+      faq5A: 'Dr Jaswin Dsouza (MD, ENT विशेषज्ञ) और Dr Vinitha Precilla Dsouza (MD, मनोरोग विशेषज्ञ)।',,
     },
   },
 }
