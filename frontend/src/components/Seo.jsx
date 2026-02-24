@@ -85,12 +85,14 @@ function Seo({ page = 'home' }) {
     upsertMeta('og:image', `${window.location.origin}/logo.jpg`, 'property')
     upsertMeta('og:image:width', '512', 'property')
     upsertMeta('og:image:height', '512', 'property')
+    upsertMeta('og:image:alt', `${clinicInfo.name} logo — Mind & ENT Health Care, Mangalore`, 'property')
 
     // Twitter
     upsertMeta('twitter:card', 'summary_large_image', 'name')
     upsertMeta('twitter:title', title, 'name')
     upsertMeta('twitter:description', description, 'name')
     upsertMeta('twitter:image', `${window.location.origin}/logo.jpg`, 'name')
+    upsertMeta('twitter:image:alt', `${clinicInfo.name} logo — Mind & ENT Health Care, Mangalore`, 'name')
 
     // Canonical
     upsertLink('canonical', window.location.href)
@@ -139,6 +141,28 @@ function Seo({ page = 'home' }) {
       priceRange: '$$',
       currenciesAccepted: 'INR',
       paymentAccepted: 'Cash, UPI',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: clinicInfo.whatsappNumber,
+        contactType: 'appointment',
+        availableLanguage: ['English', 'Kannada', 'Hindi'],
+      },
+      areaServed: [
+        { '@type': 'City', name: 'Mangalore' },
+        { '@type': 'City', name: 'Surathkal' },
+        { '@type': 'AdministrativeArea', name: 'Karnataka' },
+      ],
+      availableService: [
+        { '@type': 'MedicalTherapy', name: 'ENT (Ear, Nose, Throat) Specialist Care' },
+        { '@type': 'MedicalTherapy', name: 'Psychiatry & Mental Health Care' },
+        { '@type': 'MedicalTherapy', name: 'Anxiety & Depression Treatment' },
+        { '@type': 'MedicalTherapy', name: 'Sleep Disorder Management' },
+        { '@type': 'MedicalTherapy', name: 'Hearing Loss & Tinnitus Treatment' },
+        { '@type': 'MedicalTherapy', name: 'Stress Management' },
+      ],
+      sameAs: [
+        `https://www.google.com/maps?q=${encodeURIComponent(clinicInfo.mapQuery)}&ftid=${clinicInfo.mapFtid}`,
+      ],
     }
 
     upsertJsonLd('clinic-json-ld', clinicSchema)
@@ -209,6 +233,38 @@ function Seo({ page = 'home' }) {
             acceptedAnswer: {
               '@type': 'Answer',
               text: 'Dr Jaswin Dsouza (MD, ENT Specialist) and Dr Vinitha Percilla Dsouza (MD, Psychiatrist) are available at Indriya Clinics.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What is the cost of ENT consultation in Mangalore at Indriya Clinics?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Indriya Clinics offers affordable ENT consultations in Mangalore. Payments are accepted in Cash and UPI. Contact us via WhatsApp for current consultation fees.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Does Indriya Clinics treat anxiety and depression?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Yes. Dr Vinitha Percilla Dsouza (MD, Psychiatrist) at Indriya Clinics provides treatment for anxiety, depression, sleep disorders, stress, and other mental health conditions.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Do I need a referral to see the psychiatrist at Indriya Clinics?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'No referral is needed. You can directly book a psychiatry appointment at Indriya Clinics via WhatsApp through our website.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Is Indriya Clinics open on weekends?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Indriya Clinics is open Monday to Saturday, 9:00 AM to 8:00 PM. The clinic is closed on Sundays.',
             },
           },
         ],
