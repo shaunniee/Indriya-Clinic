@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.indriyaclinics.com/sitemap.xml
+Sitemap: https://www.indriyaclinic.com/sitemap.xml

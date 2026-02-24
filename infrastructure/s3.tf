@@ -15,17 +15,19 @@ module "public_frontend_bucket" {
     }
     lifecycle_rules = [
         {
-            id = "frontend-lifecycle-rule"
+            id      = "frontend-lifecycle-rule"
             enabled = true
             filter = {
-                prefix = "frontend/"
+                # Empty prefix applies rule to all objects in the bucket
+                prefix = ""
             }
-            transition = [
-                {
-                    days = 30
-                    storage_class = "STANDARD_IA"
-                }
-            ]
+            # Don't transition current objects — static assets are hot and
+            # STANDARD_IA has a 128 KB minimum charge + per-retrieval fees.
+            # Instead, expire noncurrent versions after 30 days to avoid
+            # accumulating stale deploys (versioning is enabled on this bucket).
+            noncurrent_version_expiration = {
+                noncurrent_days = 30
+            }
         }
     ]
     cors_rules = [
