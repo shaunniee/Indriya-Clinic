@@ -78,6 +78,14 @@ function useScrollReveal() {
   const ref = useRef(null)
 
   useEffect(() => {
+    const elements = ref.current?.querySelectorAll('.fade-up')
+
+    // Graceful degradation: if IntersectionObserver is unavailable, show all elements immediately
+    if (!('IntersectionObserver' in window) || !elements?.length) {
+      elements?.forEach((el) => el.classList.add('visible'))
+      return
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -89,8 +97,7 @@ function useScrollReveal() {
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     )
 
-    const elements = ref.current?.querySelectorAll('.fade-up')
-    elements?.forEach((el) => observer.observe(el))
+    elements.forEach((el) => observer.observe(el))
 
     return () => observer.disconnect()
   }, [])

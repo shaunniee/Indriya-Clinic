@@ -44,11 +44,19 @@ main {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.95);
+  /* Solid fallback for browsers without backdrop-filter support */
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-light);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Use translucent header only when backdrop-filter is supported */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .site-header {
+    background: rgba(255, 255, 255, 0.95);
+  }
 }
 
 .header-inner {
@@ -958,15 +966,57 @@ main {
   background: var(--bg-secondary);
   color: var(--text-primary);
   transition: all var(--transition-fast);
+  /* Normalize appearance across browsers */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Custom select arrow (cross-browser: replaces native arrow removed above) */
+.booking-form select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236E8FA8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+/* Normalize date input across browsers */
+.booking-form input[type="date"] {
+  /* Prevent iOS Safari from overriding padding/height */
+  line-height: normal;
+}
+
+/* Ensure date field text inherits color correctly on Safari/Chrome */
+.booking-form input[type="date"]::-webkit-datetime-edit-text,
+.booking-form input[type="date"]::-webkit-datetime-edit-month-field,
+.booking-form input[type="date"]::-webkit-datetime-edit-day-field,
+.booking-form input[type="date"]::-webkit-datetime-edit-year-field {
+  color: var(--text-primary);
+}
+
+/* Hide native calendar icon in Edge/Chrome; we rely on click-anywhere behavior */
+.booking-form input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+  cursor: pointer;
 }
 
 .booking-form input:focus,
 .booking-form select:focus,
 .booking-form textarea:focus {
+  /* Remove default browser outline; we provide our own visible ring */
   outline: none;
   border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(27, 107, 147, 0.1);
   background: var(--bg-primary);
+}
+
+/* Restore a visible focus ring for keyboard-only navigation */
+.booking-form input:focus-visible,
+.booking-form select:focus-visible,
+.booking-form textarea:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
 }
 
 .booking-form input::placeholder,

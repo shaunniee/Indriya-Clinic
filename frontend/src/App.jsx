@@ -42,14 +42,32 @@ function ScrollToTop() {
   const { pathname, hash } = useLocation()
 
   useEffect(() => {
-    if (hash) {
-      const element = document.querySelector(hash)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
-        return
+    // Helper: scroll to a Y position with smooth fallback for older Safari
+    const smoothScrollTo = (top) => {
+      try {
+        window.scrollTo({ top, behavior: 'smooth' })
+      } catch {
+        window.scrollTo(0, top)
       }
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+
+    if (hash) {
+      // Use rAF to ensure the DOM has painted before measuring
+      requestAnimationFrame(() => {
+        const element = document.querySelector(hash)
+        if (element) {
+          // Account for sticky header height so content isn't hidden underneath
+          const headerEl = document.querySelector('.site-header')
+          const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 72
+          const offsetTop = element.getBoundingClientRect().top + window.pageYOffset - headerHeight - 16
+          smoothScrollTo(offsetTop)
+          return
+        }
+        smoothScrollTo(0)
+      })
+      return
+    }
+    smoothScrollTo(0)
   }, [pathname, hash])
 
   return null
