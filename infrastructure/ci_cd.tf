@@ -116,8 +116,19 @@ module "public_ci_cd" {
         compute_type = "BUILD_GENERAL1_MEDIUM"
         image        = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
         type         = "LINUX_CONTAINER"
+            environment_variables = [{
+        name  = "S3_BUCKET"
+        value = module.public_frontend_bucket.bucket_name
+        type  = "PLAINTEXT"
+      },
+      {
+        name  = "CF_DISTRIBUTION_ID"
+        value = module.cloudfront_public.cloudfront_distribution_id
+        type  = "PLAINTEXT"
+      }]
       
       }
+  
       observability = {
         enabled               = true
         enable_default_alarms = true
