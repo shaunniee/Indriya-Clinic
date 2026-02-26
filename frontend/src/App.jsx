@@ -3,6 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import HomePage from './pages/HomePage'
 import BookingPage from './pages/BookingPage'
+import ServicesPage from './pages/ServicesPage'
+import DoctorsPage from './pages/DoctorsPage'
+import DoctorDetailPage from './pages/DoctorDetailPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 const WhatsAppFloatIcon = () => (
@@ -99,6 +102,8 @@ function MobileMenu({ isOpen, onClose }) {
         </button>
         <nav className="mobile-nav">
           <Link to="/" onClick={onClose}>{t('navHome')}</Link>
+          <Link to="/services" onClick={onClose}>{t('navServices')}</Link>
+          <Link to="/doctors" onClick={onClose}>{t('navDoctors')}</Link>
           <Link to="/book" onClick={onClose}>{t('navBook')}</Link>
         </nav>
         <div className="mobile-lang">
@@ -152,6 +157,8 @@ function AppShell() {
 
           <nav className="main-nav" aria-label="Main navigation">
             <Link to="/">{t('navHome')}</Link>
+            <Link to="/services">{t('navServices')}</Link>
+            <Link to="/doctors">{t('navDoctors')}</Link>
             <Link to="/book" className="nav-cta">{t('navBook')}</Link>
           </nav>
 
@@ -176,6 +183,9 @@ function AppShell() {
       <main id="main-content">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/doctors" element={<DoctorsPage />} />
+          <Route path="/doctors/:slug" element={<DoctorDetailPage />} />
           <Route path="/book" element={<BookingPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
@@ -203,8 +213,8 @@ function AppShell() {
             <div className="footer-section">
               <h4>{t('servicesTitle')}</h4>
               <ul>
-                <li><Link to="/#services">{t('serviceEntTitle')}</Link></li>
-                <li><Link to="/#services">{t('servicePsychiatryTitle')}</Link></li>
+                <li><Link to="/services#ent">{t('serviceEntTitle')}</Link></li>
+                <li><Link to="/services#psychiatry">{t('servicePsychiatryTitle')}</Link></li>
               </ul>
             </div>
             <div className="footer-section">

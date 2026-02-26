@@ -205,6 +205,7 @@ function HomePage() {
                   <span key={key} className="service-tag">{t(key)}</span>
                 ))}
               </div>
+              <Link to="/services#ent" className="service-detail-link">{t('viewAllServices')} &rarr;</Link>
             </article>
             <article className="service-card fade-up delay-2">
               <div className="service-icon psychiatry">
@@ -217,6 +218,7 @@ function HomePage() {
                   <span key={key} className="service-tag">{t(key)}</span>
                 ))}
               </div>
+              <Link to="/services#psychiatry" className="service-detail-link">{t('viewAllServices')} &rarr;</Link>
             </article>
           </div>
         </div>
@@ -272,9 +274,10 @@ function HomePage() {
           </div>
           <div className="card-grid">
             {doctors.map((doctor, index) => (
-              <article
-                key={doctor.name}
-                className={`doctor-card ${doctor.specialty.toLowerCase()}-bg fade-up delay-${index + 1}`}
+              <Link
+                key={doctor.slug}
+                to={`/doctors/${doctor.slug}`}
+                className={`doctor-card doctor-card-link ${doctor.specialty.toLowerCase()}-bg fade-up delay-${index + 1}`}
               >
                 <div className={`doctor-avatar ${doctor.specialty.toLowerCase()}`}>
                   {getInitials(doctor.name)}
@@ -283,10 +286,17 @@ function HomePage() {
                 <p className="doctor-qualification">{doctor.qualification}</p>
                 <span className={`doctor-specialty ${doctor.specialty.toLowerCase()}`}>
                   {doctor.specialty === 'ENT' ? <EarIcon size={14} /> : <BrainIcon size={14} />}
-                  {doctor.specialty}
+                  {doctor.specialtyFull}
                 </span>
-              </article>
+                <p className="doctor-bio">{t(doctor.bioKey)}</p>
+                <span className="doctor-card-cta">{t('viewProfile')} &rarr;</span>
+              </Link>
             ))}
+          </div>
+          <div className="section-cta fade-up">
+            <Link to="/doctors" className="btn-secondary">
+              {t('doctorsPageTitle')}
+            </Link>
           </div>
         </div>
       </section>

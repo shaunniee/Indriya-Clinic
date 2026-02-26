@@ -55,22 +55,38 @@ function upsertHreflang(lang, href) {
   element.setAttribute('href', href)
 }
 
-function Seo({ page = 'home' }) {
+function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
   const { t, i18n } = useTranslation()
 
   useEffect(() => {
     const isBooking = page === 'booking'
+    const isServices = page === 'services'
+    const isDoctors = page === 'doctors'
+    const isDoctorDetail = page.startsWith('doctor-')
 
     // Page-specific titles & descriptions
-    const title = isBooking
-      ? `${t('bookingTitle')} | ${clinicInfo.name}`
-      : t('seoTitle')
-    const description = isBooking
-      ? `Book an ENT or Psychiatry appointment at ${clinicInfo.name}, Surathkal, Mangalore. Quick WhatsApp booking — no waiting on hold.`
-      : t('seoDescription')
-    const keywords = isBooking
-      ? `book appointment Mangalore, ENT appointment Surathkal, psychiatry appointment Mangalore, WhatsApp doctor booking, ${t('seoKeywords')}`
-      : t('seoKeywords')
+    let title, description, keywords
+    if (isBooking) {
+      title = `${t('bookingTitle')} | ${clinicInfo.name}`
+      description = `Book an ENT or Psychiatry appointment at ${clinicInfo.name}, Surathkal, Mangalore. Quick WhatsApp booking — no waiting on hold.`
+      keywords = `book appointment Mangalore, ENT appointment Surathkal, psychiatry appointment Mangalore, WhatsApp doctor booking, ${t('seoKeywords')}`
+    } else if (isServices) {
+      title = t('seoServicesTitle')
+      description = t('seoServicesDescription')
+      keywords = `${t('seoServicesKeywords')}, ${t('seoKeywords')}`
+    } else if (isDoctors) {
+      title = t('seoDoctorsTitle')
+      description = t('seoDoctorsDescription')
+      keywords = `${t('seoDoctorsKeywords')}, ${t('seoKeywords')}`
+    } else if (isDoctorDetail && doctorSeoTitleKey) {
+      title = t(doctorSeoTitleKey)
+      description = t(doctorSeoDescKey)
+      keywords = `${t('seoDoctorsKeywords')}, ${t('seoKeywords')}`
+    } else {
+      title = t('seoTitle')
+      description = t('seoDescription')
+      keywords = t('seoKeywords')
+    }
 
     document.title = title
     document.documentElement.lang = i18n.language
@@ -226,7 +242,7 @@ function Seo({ page = 'home' }) {
     upsertJsonLd('doctors-json-ld', doctorSchemas)
 
     // FAQ schema (helps with Google featured snippets)
-    if (!isBooking) {
+    if (!isBooking && !isServices && !isDoctors && !isDoctorDetail) {
       const faqSchema = {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
@@ -268,7 +284,7 @@ function Seo({ page = 'home' }) {
             name: 'Which doctors are available at Indriya Clinics?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Dr Jaswin Dsouza (MD, ENT Specialist) and Dr Vinitha Precilla Dsouza (MD, Psychiatrist) are available at Indriya Clinics.',
+              text: "Dr Jaswin D'Souza (MBBS, MS ENT, ENT Specialist & Head and Neck Surgeon) and Dr Vinitha D'Souza (MBBS, MD Psychiatry, Consultant Psychiatrist & Sexologist) are available at Indriya Clinics.",
             },
           },
           {
@@ -284,7 +300,7 @@ function Seo({ page = 'home' }) {
             name: 'Does Indriya Clinics treat anxiety and depression?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Yes. Dr Vinitha Precilla Dsouza (MD, Psychiatrist) at Indriya Clinics provides treatment for anxiety, depression, sleep disorders, stress, and other mental health conditions.',
+              text: "Yes. Dr Vinitha D'Souza (MBBS, MD Psychiatry, Consultant Psychiatrist & Sexologist) at Indriya Clinics provides treatment for anxiety, depression, OCD, addiction, sexual health concerns, women's mental health, and other psychiatric conditions.",
             },
           },
           {
@@ -309,28 +325,42 @@ function Seo({ page = 'home' }) {
       upsertJsonLd('faq-json-ld', faqSchema)
     }
 
-    // Breadcrumb schema for booking page
-    if (isBooking) {
-      const breadcrumbSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: 'Home',
-            item: window.location.origin,
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            name: 'Book Appointment',
-            item: `${window.location.origin}/book`,
-          },
-        ],
-      }
+    // Breadcrumb schema — booking, services, doctors pages
+    if (isBooking || isServices || isDoctors || isDoctorDetail) {
+      let crumbLabel, crumbUrl
+      if (isBooking) { crumbLabel = 'Book Appointment'; crumbUrl = `${window.location.origin}/book` }
+      else if (isServices) { crumbLabel = 'Services'; crumbUrl = `${window.location.origin}/services` }
+      else if (isDoctors) { crumbLabel = 'Doctors'; crumbUrl = `${window.location.origin}/doctors` }
+      else { crumbLabel = title; crumbUrl = `${window.location.origin}${window.location.pathname}` }
 
-      upsertJsonLd('breadcrumb-json-ld', breadcrumbSchema)
+      const items = [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: window.location.origin },
+        { '@type': 'ListItem', position: 2, name: isDoctorDetail ? 'Doctors' : crumbLabel, item: isDoctorDetail ? `${window.location.origin}/doctors` : crumbUrl },
+      ]
+      if (isDoctorDetail) {
+        items.push({ '@type': 'ListItem', position: 3, name: title, item: `${window.location.origin}${window.location.pathname}` })
+      }
+      upsertJsonLd('breadcrumb-json-ld', { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items })
+    }
+
+    // MedicalWebPage schema for services page
+    if (isServices) {
+      const servicePageSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'MedicalWebPage',
+        name: t('seoServicesTitle'),
+        description: t('seoServicesDescription'),
+        url: `${window.location.origin}/services`,
+        about: [
+          { '@type': 'MedicalSpecialty', name: 'Otolaryngologic' },
+          { '@type': 'MedicalSpecialty', name: 'Psychiatric' },
+        ],
+        mainContentOfPage: {
+          '@type': 'WebPageElement',
+          cssSelector: 'main',
+        },
+      }
+      upsertJsonLd('services-page-json-ld', servicePageSchema)
     }
   }, [i18n.language, t, page])
 

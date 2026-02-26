@@ -1,115 +1,60 @@
-# Indriya Clinic
+# Indriya Clinic AWS Infrastructure
 
-Website and infrastructure for **Indriya Clinics** (Mind & ENT Health Care), including:
+AWS-first repository for hosting and delivering the Indriya Clinics public website.
 
-- A multilingual React frontend (English, Kannada, Hindi)
-- WhatsApp-based appointment booking flow
-- Infrastructure as code (Terraform) for AWS hosting and CI/CD
+Primary scope:
 
-## Project Overview
+- Infrastructure as code with Terraform
+- Secure static hosting on AWS
+- Automated CI/CD with CodePipeline and CodeBuild
+- Custom domain with CloudFront, ACM, and Route53
 
-The public site is a Vite + React single-page application that serves:
+## AWS Architecture
 
-- Clinic introduction and services (ENT and Psychiatry)
-- Doctor profiles
-- Location and clinic hours
-- Appointment booking via prefilled WhatsApp message
+This project provisions the following on AWS:
 
-Infrastructure provisions secure static hosting and delivery using S3 + CloudFront, DNS via Route53, certificate management with ACM, and a CodePipeline/CodeBuild deployment path.
+- S3 private bucket for frontend hosting artifacts
+- CloudFront distribution with SPA fallback behavior
+- ACM certificate in us-east-1 for CloudFront TLS
+- Route53 alias records for apex and www domains
+- SNS topic for CloudWatch alarm notifications
+- CodePipeline + CodeBuild for build and deployment automation
 
-## Repository Structure
+Request flow:
+
+1. User hits indriyaclinic.com or www.indriyaclinic.com
+2. Route53 resolves to CloudFront
+3. CloudFront serves static assets from private S3 origin
+4. SPA route misses are rewritten to index.html
+
+## Repository Layout
 
 ```text
 .
-├── frontend/                     # React + Vite public website
-│   ├── src/
-│   │   ├── pages/                # Home, booking, 404 pages
-│   │   ├── components/           # Shared components (e.g., SEO)
-│   │   ├── clinicData.js         # Clinic metadata, doctors, contact
-│   │   └── i18n.js               # i18next translation resources
-│   ├── public/                   # robots, sitemap, redirects
-│   └── package.json
-├── infrastructure/               # Terraform for AWS resources
-│   ├── main.tf
-│   ├── s3.tf
-│   ├── cloudfront.tf
-│   ├── route53.tf
-│   ├── ci_cd.tf
-│   └── dev.tfvars
-└── buildspec.public-frontend.yml # CodeBuild build/deploy spec
+├── infrastructure/                # Terraform AWS stack
+│   ├── main.tf                    # Providers and Terraform version
+│   ├── variables.tf               # Input variables
+│   ├── dev.tfvars                 # Environment values
+│   ├── s3.tf                      # Hosting + log buckets
+│   ├── cloudfront.tf              # CDN distribution
+│   ├── route53.tf                 # DNS + ACM validation records
+│   ├── ci_cd.tf                   # CodePipeline + CodeBuild
+│   ├── sns.tf                     # Alarm notifications
+│   └── iam/                       # Bucket policy modules
+├── buildspec.public-frontend.yml  # Build/deploy instructions for CodeBuild
+└── frontend/                      # Website source code (build artifact input)
 ```
 
-## Frontend Stack
+## Infrastructure Deployment
 
-- **React 19** + **Vite 7**
-- **React Router** for SPA routing
-- **i18next + react-i18next** for localization
-- **ESLint** for linting
+Prerequisites:
 
-### App Routes
+- Terraform ~> 1.14
+- AWS credentials configured locally
+- Existing Route53 hosted zone ID
+- Valid CodeStar connection ARN for GitHub integration
 
-- `/` — Home page
-- `/book` — Booking page
-- `*` — Not found page
-
-## Local Development
-
-### Prerequisites
-
-- Node.js 20+
-- npm 10+
-
-### Run locally
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Build and preview:
-
-```bash
-npm run build
-npm run preview
-```
-
-Lint:
-
-```bash
-npm run lint
-```
-
-## Configuration Notes
-
-Clinic-facing content is primarily maintained in:
-
-- `frontend/src/clinicData.js`
-- `frontend/src/i18n.js`
-
-This includes:
-
-- Clinic name, address, map query, and WhatsApp number
-- Doctor information
-- All UI copy for EN / KN / HI
-
-## Infrastructure (Terraform)
-
-### What gets provisioned
-
-- Private S3 bucket for frontend assets
-- CloudFront distribution (SPA fallback enabled)
-- ACM certificate (in `us-east-1`) for custom domain
-- Route53 records for apex + `www`
-- CloudWatch alarm notifications via SNS
-- CodePipeline + CodeBuild for automated deployment
-
-### Prerequisites
-
-- Terraform `~> 1.14`
-- AWS credentials with required permissions
-
-### Deploy infrastructure
+Deploy:
 
 ```bash
 cd infrastructure
@@ -118,21 +63,56 @@ terraform plan -var-file="dev.tfvars"
 terraform apply -var-file="dev.tfvars"
 ```
 
-## CI/CD Flow
+## Required Terraform Inputs
 
-`ci_cd.tf` configures a pipeline that watches changes to:
+Set in dev.tfvars (or per-environment tfvars):
 
-- `frontend/**`
-- `buildspec.public-frontend.yml`
+- aws_region
+- acm_region (must be us-east-1 for CloudFront)
+- name_prefix
+- hosted_zone_id
+- codestar_connection_arn
+- repo_fullId
+- repo_branch
 
-The build spec installs dependencies, builds the frontend, syncs `dist/` to S3, and invalidates CloudFront cache.
+## CI/CD Behavior
 
-## Domain
+Pipeline source trigger is configured for:
 
-Configured for:
+- frontend/**
+- buildspec.public-frontend.yml
 
-- `indriyaclinic.com`
-- `www.indriyaclinic.com`
+Build/deploy sequence:
+
+1. CodeBuild installs frontend dependencies
+2. Frontend is built using Vite
+3. dist is synced to S3 hosting bucket
+4. CloudFront cache invalidation is created
+
+## Security and Ops Notes
+
+- Frontend bucket is private and accessed via CloudFront
+- Server-side encryption is enabled on buckets
+- Versioning is enabled for hosting and log buckets
+- CloudFront access logs are stored in a dedicated S3 log bucket
+- CloudWatch alarms notify via SNS email subscription
+
+## Frontend Context (Secondary)
+
+The website is a React + Vite SPA with multilingual support (EN, KN, HI) and WhatsApp-based appointment booking.
+
+For local frontend dev:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## Domains
+
+- indriyaclinic.com
+- www.indriyaclinic.com
 
 ## License
 

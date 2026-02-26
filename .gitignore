@@ -4,3 +4,5 @@ terraform.tfstate
 terraform.tfstate.backup
 # Local .terraformrc file may contain sensitive information, so we ignore it
 .terraformrc
+.node_modules/
+*.docx
