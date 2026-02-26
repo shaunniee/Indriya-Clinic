@@ -190,12 +190,6 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
           opens: '17:00',
           closes: '20:00',
         },
-        {
-          '@type': 'OpeningHoursSpecification',
-          dayOfWeek: 'Sunday',
-          opens: '00:00',
-          closes: '00:00',
-        },
       ],
       medicalSpecialty: ['Otolaryngologic', 'Psychiatric'],
       availableLanguage: [
@@ -207,12 +201,12 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       priceRange: '$$',
       currenciesAccepted: 'INR',
       paymentAccepted: 'Cash, UPI',
-      contactPoint: {
+      contactPoint: clinicInfo.whatsappNumber ? {
         '@type': 'ContactPoint',
         telephone: clinicInfo.whatsappNumber,
         contactType: 'appointment',
         availableLanguage: ['English', 'Kannada', 'Hindi'],
-      },
+      } : undefined,
       areaServed: [
         { '@type': 'City', name: 'Mangalore' },
         { '@type': 'City', name: 'Surathkal' },
@@ -226,6 +220,21 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
         { '@type': 'MedicalTherapy', name: 'Hearing Loss & Tinnitus Treatment' },
         { '@type': 'MedicalTherapy', name: 'Stress Management' },
       ],
+      potentialAction: {
+        '@type': 'ReserveAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: `${window.location.origin}/book`,
+          actionPlatform: [
+            'http://schema.org/DesktopWebPlatform',
+            'http://schema.org/MobileWebPlatform',
+          ],
+        },
+        result: {
+          '@type': 'Reservation',
+          name: 'Book Appointment',
+        },
+      },
       sameAs: [
         `https://www.google.com/maps?q=${encodeURIComponent(clinicInfo.mapQuery)}&ftid=${clinicInfo.mapFtid}`,
         // TODO: Add your Google Business Profile URL here, e.g.:
@@ -343,6 +352,46 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
             acceptedAnswer: {
               '@type': 'Answer',
               text: 'Indriya Clinics is open Monday to Saturday, 5:00 PM to 8:00 PM. The clinic is closed on Sundays. Online consultation is also available via WhatsApp.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Do you offer online consultations?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Yes, Indriya Clinics offers online consultations via WhatsApp for follow-ups and initial assessments. Contact us through the booking form to arrange a virtual appointment.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What ENT conditions do you treat?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'We treat a wide range of ENT conditions including sinusitis, hearing loss, vertigo, tonsillitis, adenoid problems, nasal allergies, ear infections, voice disorders, snoring, sleep apnea, and head & neck conditions.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What mental health conditions do you treat?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'We provide treatment for depression, anxiety, panic attacks, OCD, bipolar disorder, sleep disorders, addiction, sexual health concerns, ADHD, autism spectrum disorders, and other psychiatric conditions.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Is the consultation confidential?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Absolutely. All consultations at Indriya Clinics — whether in-person or online — are completely confidential. We maintain strict patient privacy in accordance with medical ethics and Indian data protection laws.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Do I need a referral to visit the clinic?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'No referral is needed. You can directly book an appointment with any of our specialists via WhatsApp or by visiting the clinic during working hours.',
             },
           },
         ],

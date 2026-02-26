@@ -73,7 +73,7 @@ function ServiceSection({ service, icon, titleKey, bodyKey, colorClass, index })
               )
               if (!doc) return null
               return (
-                <div className="services-doctor-chip">
+                <Link to={`/doctors/${doc.slug}`} className="services-doctor-chip services-doctor-chip-link">
                   <div className={`services-doctor-avatar ${doc.specialty.toLowerCase()}`}>
                     {doc.name.replace(/^Dr\.?\s*/i, '').split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase()}
                   </div>
@@ -81,7 +81,7 @@ function ServiceSection({ service, icon, titleKey, bodyKey, colorClass, index })
                     <span className="services-doctor-name">{doc.name}</span>
                     <span className="services-doctor-qual">{doc.qualification} · {doc.specialtyFull}</span>
                   </div>
-                </div>
+                </Link>
               )
             })() : null}
 
@@ -93,7 +93,7 @@ function ServiceSection({ service, icon, titleKey, bodyKey, colorClass, index })
 
           {/* Conditions grid */}
           <div className="services-conditions-grid">
-            <h3 className="conditions-title">{t('conditionsWeTraeat')}</h3>
+            <h3 className="conditions-title">{t('conditionsWeTreat')}</h3>
             <ul className="conditions-list">
               {service.conditions.map((condition) => (
                 <li key={condition.name} className="condition-item">

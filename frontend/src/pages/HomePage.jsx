@@ -324,7 +324,7 @@ function HomePage() {
             <div className="section-divider" />
           </div>
           <div className="faq-list fade-up">
-            {[1, 2, 3, 4, 5].map((n) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
               <details key={n} className="faq-item">
                 <summary>{t(`faq${n}Q`)}</summary>
                 <p>{t(`faq${n}A`)}</p>

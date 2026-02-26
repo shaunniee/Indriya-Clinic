@@ -1646,6 +1646,19 @@ main {
   box-shadow: var(--shadow-sm);
 }
 
+.services-doctor-chip-link {
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+.services-doctor-chip-link:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+
 .services-doctor-avatar {
   width: 46px;
   height: 46px;
@@ -1930,7 +1943,7 @@ main {
   margin: 0 0 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.45rem;
   align-self: stretch;
   text-align: left;
 }
@@ -1938,16 +1951,49 @@ main {
 .doctor-profile-conditions li {
   font-size: 0.82rem;
   color: var(--text-secondary);
-  padding-left: 1rem;
+  padding-left: 0;
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1.4;
 }
 
-.doctor-profile-conditions li::before {
-  content: '·';
-  position: absolute;
-  left: 0;
+.doctor-profile-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.doctor-profile-check.ent {
+  background: var(--blue-light);
   color: var(--blue);
-  font-weight: 700;
+}
+
+.doctor-profile-check.psychiatry {
+  background: var(--orange-light);
+  color: var(--orange);
+}
+
+.doctor-profile-more {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+  padding-left: 1.85rem;
+}
+
+.doctor-profile-languages {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
 }
 
 .doctor-profile-card:has(.psychiatry) .doctor-profile-conditions li::before {
@@ -2096,6 +2142,14 @@ main {
   color: var(--text-secondary);
   line-height: 1.75;
   margin-bottom: 1.5rem;
+}
+
+.doctor-detail-long-bio p {
+  margin: 0 0 1rem;
+}
+
+.doctor-detail-long-bio p:last-child {
+  margin-bottom: 0;
 }
 
 .doctor-detail-booking-card {

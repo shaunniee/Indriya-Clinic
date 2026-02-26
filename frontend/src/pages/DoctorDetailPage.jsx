@@ -87,6 +87,7 @@ function DoctorDetailPage() {
   const isEnt = doctor.specialty === 'ENT'
   const seoTitleKey = isEnt ? 'seoJaswinTitle' : 'seoPsychTitle'
   const seoDescKey = isEnt ? 'seoJaswinDescription' : 'seoPsychDescription'
+  const firstName = doctor.name.replace(/^Dr\.?\s*/i, '').split(' ')[0]
 
   return (
     <div ref={pageRef}>
@@ -149,8 +150,12 @@ function DoctorDetailPage() {
 
             {/* Long bio */}
             <div className="doctor-detail-bio-section">
-              <h2>{t('doctorsTitle')}</h2>
-              <p className="doctor-detail-long-bio">{t(doctor.bioLongKey)}</p>
+              <h2>About {firstName}</h2>
+              <div className="doctor-detail-long-bio">
+                {t(doctor.bioLongKey).split('\n\n').map((paragraph, i) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </div>
 
               {/* Book CTA card */}
               <div className={`doctor-detail-booking-card ${doctor.specialty.toLowerCase()}`}>

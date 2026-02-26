@@ -21,13 +21,10 @@ module "public_frontend_bucket" {
                 # Empty prefix applies rule to all objects in the bucket
                 prefix = ""
             }
-            # Don't transition current objects — static assets are hot and
-            # STANDARD_IA has a 128 KB minimum charge + per-retrieval fees.
-            # Instead, expire noncurrent versions after 30 days to avoid
-            # accumulating stale deploys (versioning is enabled on this bucket).
-            noncurrent_version_expiration = {
+
+            noncurrent_version_expiration = [{
                 noncurrent_days = 30
-            }
+            }]
         }
     ]
     cors_rules = [
@@ -73,5 +70,20 @@ module "cloudfront_logging_bucket" {
             ]
         }
     ]
+}
+
+# Enable ACLs on the CloudFront logging bucket (required by CloudFront)
+
+resource "aws_s3_bucket_ownership_controls" "cloudfront_logging" {
+    bucket = module.cloudfront_logging_bucket.bucket_id
+    rule {
+        object_ownership = "BucketOwnerPreferred"
+    }
+}
+
+resource "aws_s3_bucket_acl" "cloudfront_logging" {
+    depends_on = [aws_s3_bucket_ownership_controls.cloudfront_logging]
+    bucket     = module.cloudfront_logging_bucket.bucket_id
+    acl        = "private"
 }
 

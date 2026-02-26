@@ -8,7 +8,7 @@ export const clinicInfo = {
   country: 'IN',
   mapQuery: "Kudva's Grandeur, Surathkal, Mangaluru, Karnataka 575014, India",
   mapFtid: '0x3ba3513df55a9b03:0x371482bdfd4ac059',
-  whatsappNumber: '',
+  whatsappNumber: '+919449244651',
 }
 
 export const doctors = [

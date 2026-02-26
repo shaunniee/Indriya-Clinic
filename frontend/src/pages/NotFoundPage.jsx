@@ -1,8 +1,21 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function NotFoundPage() {
   const { t } = useTranslation()
+
+  useEffect(() => {
+    document.title = '404 — Page Not Found | Indriya Clinics'
+    let meta = document.head.querySelector('meta[name="robots"]')
+    if (!meta) {
+      meta = document.createElement('meta')
+      meta.setAttribute('name', 'robots')
+      document.head.appendChild(meta)
+    }
+    meta.setAttribute('content', 'noindex, nofollow')
+    return () => { meta.setAttribute('content', 'index, follow') }
+  }, [])
 
   return (
     <section className="section" style={{ textAlign: 'center', padding: '6rem 0' }}>
