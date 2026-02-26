@@ -63,11 +63,12 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
     const isServices = page === 'services'
     const isDoctors = page === 'doctors'
     const isDoctorDetail = page.startsWith('doctor-')
+    const isPrivacy = page === 'privacy'
 
     // Page-specific titles & descriptions
     let title, description, keywords
     if (isBooking) {
-      title = `${t('bookingTitle')} | ${clinicInfo.name}`
+      title = `${t('bookingTitle')} | ${clinicInfo.name}, Mangalore`
       description = `Book an ENT or Psychiatry appointment at ${clinicInfo.name}, Surathkal, Mangalore. Quick WhatsApp booking — no waiting on hold.`
       keywords = `book appointment Mangalore, ENT appointment Surathkal, psychiatry appointment Mangalore, WhatsApp doctor booking, ${t('seoKeywords')}`
     } else if (isServices) {
@@ -82,6 +83,10 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       title = t(doctorSeoTitleKey)
       description = t(doctorSeoDescKey)
       keywords = `${t('seoDoctorsKeywords')}, ${t('seoKeywords')}`
+    } else if (isPrivacy) {
+      title = `${t('privacyTitle')} | ${clinicInfo.name}`
+      description = `Privacy Policy for ${clinicInfo.name} — how we handle your personal information when using our WhatsApp booking service.`
+      keywords = `privacy policy, ${clinicInfo.name}, data protection`
     } else {
       title = t('seoTitle')
       description = t('seoDescription')
@@ -134,7 +139,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       })
 
     // Twitter
-    upsertMeta('twitter:card', 'summary_large_image', 'name')
+    upsertMeta('twitter:card', 'summary', 'name')
     upsertMeta('twitter:title', title, 'name')
     upsertMeta('twitter:description', description, 'name')
     upsertMeta('twitter:image', `${window.location.origin}/logo.jpg`, 'name')
@@ -143,10 +148,13 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
     // Canonical
     upsertLink('canonical', canonicalUrl)
 
-    // Hreflang — updated dynamically so /book page and language switches are correct
-    upsertHreflang('en', canonicalUrl)
-    upsertHreflang('kn', canonicalUrl)
-    upsertHreflang('hi', canonicalUrl)
+    // Hreflang — since language is client-side state (not URL-path based),
+    // only set x-default to indicate this URL serves all languages.
+    // Remove any stale per-language hreflang tags from previous renders.
+    ;['en', 'kn', 'hi'].forEach((lang) => {
+      const stale = document.head.querySelector(`link[rel="alternate"][hreflang="${lang}"]`)
+      if (stale) stale.remove()
+    })
     upsertHreflang('x-default', canonicalUrl)
 
     // MedicalClinic schema (rich structured data)
@@ -179,8 +187,14 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
         {
           '@type': 'OpeningHoursSpecification',
           dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-          opens: '09:00',
+          opens: '17:00',
           closes: '20:00',
+        },
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: 'Sunday',
+          opens: '00:00',
+          closes: '00:00',
         },
       ],
       medicalSpecialty: ['Otolaryngologic', 'Psychiatric'],
@@ -214,6 +228,11 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       ],
       sameAs: [
         `https://www.google.com/maps?q=${encodeURIComponent(clinicInfo.mapQuery)}&ftid=${clinicInfo.mapFtid}`,
+        // TODO: Add your Google Business Profile URL here, e.g.:
+        // 'https://www.google.com/maps/place/Indriya+Clinics/...',
+        // TODO: Add social media profiles if available, e.g.:
+        // 'https://www.facebook.com/IndriyaClinics',
+        // 'https://www.instagram.com/indriyaclinics/',
       ],
     }
 
@@ -223,9 +242,14 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
     const doctorSchemas = doctors.map((doctor) => ({
       '@context': 'https://schema.org',
       '@type': 'Physician',
+      '@id': `${window.location.origin}/doctors/${doctor.slug}#physician`,
+      url: `${window.location.origin}/doctors/${doctor.slug}`,
       name: doctor.name,
+      description: doctor.specialtyFull,
+      image: `${window.location.origin}/logo.jpg`,
       medicalSpecialty: doctor.specialty === 'ENT' ? 'Otolaryngologic' : 'Psychiatric',
       qualification: doctor.qualification,
+      knowsLanguage: doctor.languages.map((lang) => ({ '@type': 'Language', name: lang })),
       worksFor: {
         '@type': 'MedicalClinic',
         '@id': `${window.location.origin}/#clinic`,
@@ -233,8 +257,10 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       },
       address: {
         '@type': 'PostalAddress',
+        streetAddress: '2nd floor, Kuduva Grandeur Commercial Complex, MRPL Road, Surathkal Junction',
         addressLocality: 'Mangalore',
         addressRegion: 'Karnataka',
+        postalCode: clinicInfo.postalCode,
         addressCountry: 'IN',
       },
     }))
@@ -276,7 +302,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
             name: 'What are the clinic timings?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Indriya Clinics is open Monday to Saturday, 9:00 AM to 8:00 PM. The clinic is closed on Sundays.',
+              text: 'Indriya Clinics is open Monday to Saturday, 5:00 PM to 8:00 PM. The clinic is closed on Sundays. Online consultation is also available via WhatsApp.',
             },
           },
           {
@@ -316,7 +342,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
             name: 'Is Indriya Clinics open on weekends?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Indriya Clinics is open Monday to Saturday, 9:00 AM to 8:00 PM. The clinic is closed on Sundays.',
+              text: 'Indriya Clinics is open Monday to Saturday, 5:00 PM to 8:00 PM. The clinic is closed on Sundays. Online consultation is also available via WhatsApp.',
             },
           },
         ],

@@ -8,6 +8,7 @@ const ServicesPage = lazy(() => import('./pages/ServicesPage'))
 const DoctorsPage = lazy(() => import('./pages/DoctorsPage'))
 const DoctorDetailPage = lazy(() => import('./pages/DoctorDetailPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
 
 /* Lightweight loading fallback — no extra bundle weight */
 const PageLoading = () => (
@@ -105,7 +106,7 @@ function MobileMenu({ isOpen, onClose }) {
   }, [isOpen])
 
   return (
-    <div className={`mobile-menu ${isOpen ? 'open' : ''}`} role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div id="mobile-nav-panel" className={`mobile-menu ${isOpen ? 'open' : ''}`} role="dialog" aria-modal="true" aria-label="Navigation menu">
       <div className="mobile-backdrop" onClick={onClose} aria-hidden="true" />
       <div className="mobile-panel">
         <button className="mobile-close" onClick={onClose} aria-label="Close menu">
@@ -191,7 +192,7 @@ function AppShell() {
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
             aria-expanded={menuOpen}
-            aria-controls="mobile-menu"
+            aria-controls="mobile-nav-panel"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="3" y1="6" x2="21" y2="6" />
@@ -212,6 +213,7 @@ function AppShell() {
             <Route path="/doctors" element={<DoctorsPage />} />
             <Route path="/doctors/:slug" element={<DoctorDetailPage />} />
             <Route path="/book" element={<BookingPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
@@ -256,6 +258,7 @@ function AppShell() {
           </div>
           <div className="footer-bottom">
             <p>{t('footerLine')}</p>
+            <Link to="/privacy" className="footer-privacy-link">{t('footerPrivacy')}</Link>
           </div>
         </div>
       </footer>

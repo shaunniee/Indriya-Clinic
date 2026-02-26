@@ -60,6 +60,16 @@ function DoctorsPage() {
     <div ref={pageRef}>
       <Seo page="doctors" />
 
+      {/* Breadcrumb */}
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <div className="container">
+          <ol className="breadcrumb-list">
+            <li><Link to="/">{t('breadcrumbHome')}</Link></li>
+            <li aria-current="page">{t('breadcrumbDoctors')}</li>
+          </ol>
+        </div>
+      </nav>
+
       {/* Page hero */}
       <section className="doctors-page-hero">
         <div className="container">

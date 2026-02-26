@@ -1,0 +1,19 @@
+{
+  "name": "Indriya Clinics — Mind & ENT Health Care",
+  "short_name": "Indriya Clinics",
+  "description": "Specialist ENT and Psychiatry clinic in Surathkal, Mangalore. Book appointments via WhatsApp.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F9FC",
+  "theme_color": "#0F6F9A",
+  "icons": [
+    {
+      "src": "/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "lang": "en",
+  "categories": ["health", "medical"]
+}

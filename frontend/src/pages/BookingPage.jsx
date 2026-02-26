@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Seo from '../components/Seo'
 import { clinicInfo } from '../clinicData'
@@ -83,6 +84,14 @@ function BookingPage() {
     <section className="section booking-page">
       <Seo page="booking" />
       <div className="container">
+        {/* Breadcrumb */}
+        <nav className="breadcrumb" aria-label="Breadcrumb" style={{ marginBottom: '1.5rem' }}>
+          <ol className="breadcrumb-list">
+            <li><Link to="/">{t('breadcrumbHome')}</Link></li>
+            <li aria-current="page">{t('breadcrumbBook')}</li>
+          </ol>
+        </nav>
+
         <h1>{t('bookingTitle')}</h1>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>{t('bookingText')}</p>
 

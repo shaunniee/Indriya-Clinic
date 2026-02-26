@@ -123,6 +123,16 @@ function ServicesPage() {
     <div ref={pageRef}>
       <Seo page="services" />
 
+      {/* Breadcrumb */}
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <div className="container">
+          <ol className="breadcrumb-list">
+            <li><Link to="/">{t('breadcrumbHome')}</Link></li>
+            <li aria-current="page">{t('breadcrumbServices')}</li>
+          </ol>
+        </div>
+      </nav>
+
       {/* Page hero */}
       <section className="services-page-hero">
         <div className="container">

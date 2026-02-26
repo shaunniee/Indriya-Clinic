@@ -93,11 +93,15 @@ function DoctorDetailPage() {
       <Seo page={`doctor-${doctor.slug}`} doctorSeoTitleKey={seoTitleKey} doctorSeoDescKey={seoDescKey} />
 
       {/* Breadcrumb */}
-      <div className="doctor-detail-breadcrumb">
+      <nav className="breadcrumb" aria-label="Breadcrumb">
         <div className="container">
-          <Link to="/doctors">{t('backToDoctors')}</Link>
+          <ol className="breadcrumb-list">
+            <li><Link to="/">{t('breadcrumbHome')}</Link></li>
+            <li><Link to="/doctors">{t('breadcrumbDoctors')}</Link></li>
+            <li aria-current="page">{doctor.name}</li>
+          </ol>
         </div>
-      </div>
+      </nav>
 
       {/* Profile hero */}
       <section className={`doctor-detail-hero ${doctor.specialty.toLowerCase()}-hero`}>
@@ -150,7 +154,7 @@ function DoctorDetailPage() {
 
               {/* Book CTA card */}
               <div className={`doctor-detail-booking-card ${doctor.specialty.toLowerCase()}`}>
-                <p>Book a consultation with <strong>{doctor.name}</strong> at Indriya Clinics, Surathkal, Mangalore.</p>
+                <p>{t('bookConsultationWith', { doctorName: doctor.name })}</p>
                 <Link to="/book" className="btn-primary btn-whatsapp">
                   <WhatsAppIcon />
                   {t('bookWithDoctor')}
