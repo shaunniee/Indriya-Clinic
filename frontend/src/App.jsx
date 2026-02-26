@@ -1,12 +1,20 @@
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
-import HomePage from './pages/HomePage'
-import BookingPage from './pages/BookingPage'
-import ServicesPage from './pages/ServicesPage'
-import DoctorsPage from './pages/DoctorsPage'
-import DoctorDetailPage from './pages/DoctorDetailPage'
-import NotFoundPage from './pages/NotFoundPage'
+import { lazy, Suspense, useEffect, useState } from 'react'
+
+const HomePage = lazy(() => import('./pages/HomePage'))
+const BookingPage = lazy(() => import('./pages/BookingPage'))
+const ServicesPage = lazy(() => import('./pages/ServicesPage'))
+const DoctorsPage = lazy(() => import('./pages/DoctorsPage'))
+const DoctorDetailPage = lazy(() => import('./pages/DoctorDetailPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
+
+/* Lightweight loading fallback — no extra bundle weight */
+const PageLoading = () => (
+  <div className="page-loading" role="status" aria-label="Loading page">
+    <div className="page-loading-spinner" />
+  </div>
+)
 
 const WhatsAppFloatIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor">
@@ -18,22 +26,28 @@ function LanguageSwitcher({ className }) {
   const { i18n } = useTranslation()
 
   return (
-    <div className={className} aria-label="Language selector">
+    <div className={className} role="group" aria-label="Language selector">
       <button
         className={i18n.language === 'en' ? 'active' : ''}
         onClick={() => i18n.changeLanguage('en')}
+        aria-label="English"
+        aria-pressed={i18n.language === 'en'}
       >
         EN
       </button>
       <button
         className={i18n.language === 'kn' ? 'active' : ''}
         onClick={() => i18n.changeLanguage('kn')}
+        aria-label="ಕನ್ನಡ (Kannada)"
+        aria-pressed={i18n.language === 'kn'}
       >
         ಕನ್ನಡ
       </button>
       <button
         className={i18n.language === 'hi' ? 'active' : ''}
         onClick={() => i18n.changeLanguage('hi')}
+        aria-label="हिन्दी (Hindi)"
+        aria-pressed={i18n.language === 'hi'}
       >
         हिन्दी
       </button>
@@ -91,8 +105,8 @@ function MobileMenu({ isOpen, onClose }) {
   }, [isOpen])
 
   return (
-    <div className={`mobile-menu ${isOpen ? 'open' : ''}`}>
-      <div className="mobile-backdrop" onClick={onClose} />
+    <div className={`mobile-menu ${isOpen ? 'open' : ''}`} role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div className="mobile-backdrop" onClick={onClose} aria-hidden="true" />
       <div className="mobile-panel">
         <button className="mobile-close" onClick={onClose} aria-label="Close menu">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -100,28 +114,34 @@ function MobileMenu({ isOpen, onClose }) {
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
-        <nav className="mobile-nav">
+        <nav className="mobile-nav" aria-label="Mobile navigation">
           <Link to="/" onClick={onClose}>{t('navHome')}</Link>
           <Link to="/services" onClick={onClose}>{t('navServices')}</Link>
           <Link to="/doctors" onClick={onClose}>{t('navDoctors')}</Link>
           <Link to="/book" onClick={onClose}>{t('navBook')}</Link>
         </nav>
-        <div className="mobile-lang">
+        <div className="mobile-lang" role="group" aria-label="Language selector">
           <button
             className={i18n.language === 'en' ? 'active' : ''}
             onClick={() => { i18n.changeLanguage('en'); onClose() }}
+            aria-label="English"
+            aria-pressed={i18n.language === 'en'}
           >
             EN
           </button>
           <button
             className={i18n.language === 'kn' ? 'active' : ''}
             onClick={() => { i18n.changeLanguage('kn'); onClose() }}
+            aria-label="ಕನ್ನಡ (Kannada)"
+            aria-pressed={i18n.language === 'kn'}
           >
             ಕನ್ನಡ
           </button>
           <button
             className={i18n.language === 'hi' ? 'active' : ''}
             onClick={() => { i18n.changeLanguage('hi'); onClose() }}
+            aria-label="हिन्दी (Hindi)"
+            aria-pressed={i18n.language === 'hi'}
           >
             हिन्दी
           </button>
@@ -143,6 +163,8 @@ function AppShell() {
             <img
               src="/logo.jpg"
               alt="Indriya Clinics logo"
+              width="44"
+              height="44"
               onError={(event) => {
                 event.currentTarget.style.display = 'none'
               }}
@@ -168,6 +190,8 @@ function AppShell() {
             className="menu-toggle"
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="3" y1="6" x2="21" y2="6" />
@@ -181,14 +205,16 @@ function AppShell() {
       <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <main id="main-content">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/doctors" element={<DoctorsPage />} />
-          <Route path="/doctors/:slug" element={<DoctorDetailPage />} />
-          <Route path="/book" element={<BookingPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        <Suspense fallback={<PageLoading />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/doctors" element={<DoctorsPage />} />
+            <Route path="/doctors/:slug" element={<DoctorDetailPage />} />
+            <Route path="/book" element={<BookingPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
       </main>
 
       {/* Floating WhatsApp button */}
@@ -203,7 +229,10 @@ function AppShell() {
               <div className="footer-brand">
                 <img
                   src="/logo.jpg"
-                  alt=""
+                  alt="Indriya Clinics logo"
+                  width="40"
+                  height="40"
+                  loading="lazy"
                   onError={(event) => { event.currentTarget.style.display = 'none' }}
                 />
                 <span className="footer-brand-name">Indriya Clinics</span>
