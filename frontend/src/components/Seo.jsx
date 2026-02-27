@@ -64,10 +64,15 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
     const isDoctors = page === 'doctors'
     const isDoctorDetail = page.startsWith('doctor-')
     const isPrivacy = page === 'privacy'
+    const isNotFound = page === 'notfound'
 
     // Page-specific titles & descriptions
     let title, description, keywords
-    if (isBooking) {
+    if (isNotFound) {
+      title = '404 — Page Not Found | ' + clinicInfo.name
+      description = 'The page you are looking for does not exist.'
+      keywords = clinicInfo.name
+    } else if (isBooking) {
       title = `${t('bookingTitle')} | ${clinicInfo.name}, Mangalore`
       description = `Book an ENT or Psychiatry appointment at ${clinicInfo.name}, Surathkal, Mangalore. Quick WhatsApp booking — no waiting on hold.`
       keywords = `book appointment Mangalore, ENT appointment Surathkal, psychiatry appointment Mangalore, WhatsApp doctor booking, ${t('seoKeywords')}`
@@ -102,7 +107,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
     // Standard meta
     upsertMeta('description', description)
     upsertMeta('keywords', keywords)
-    upsertMeta('robots', 'index, follow')
+    upsertMeta('robots', isNotFound ? 'noindex, nofollow' : 'index, follow')
     upsertMeta('author', clinicInfo.name)
 
     // OG locale — must be language_TERRITORY format
@@ -237,11 +242,8 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       },
       sameAs: [
         `https://www.google.com/maps?q=${encodeURIComponent(clinicInfo.mapQuery)}&ftid=${clinicInfo.mapFtid}`,
-        // TODO: Add your Google Business Profile URL here, e.g.:
-        // 'https://www.google.com/maps/place/Indriya+Clinics/...',
-        // TODO: Add social media profiles if available, e.g.:
-        // 'https://www.facebook.com/IndriyaClinics',
-        // 'https://www.instagram.com/indriyaclinics/',
+        'https://www.instagram.com/drjaswin_dsouza',
+        'https://www.instagram.com/clinincstocontinents',
       ],
     }
 
@@ -437,7 +439,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       }
       upsertJsonLd('services-page-json-ld', servicePageSchema)
     }
-  }, [i18n.language, t, page])
+  }, [i18n.language, t, page, doctorSeoTitleKey, doctorSeoDescKey])
 
   return null
 }

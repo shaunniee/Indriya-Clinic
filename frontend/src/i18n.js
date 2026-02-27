@@ -9,7 +9,6 @@ const resources = {
       navServices: 'Services',
       navDoctors: 'Doctors',
       navBook: 'Book Appointment',
-      heroTitle: 'Comprehensive Mind and ENT Care in Mangalore',
       heroTitlePre: 'Comprehensive ',
       heroHighlight1: 'Mind',
       heroTitleMid: ' and ',
@@ -98,7 +97,6 @@ const resources = {
       hoursText: 'Mon - Sat: 5:00 PM - 8:00 PM',
       contactText: 'WhatsApp for appointments & online consultation',
       locationShort: 'Surathkal Junction, Mangalore',
-      hoursShort: 'Mon - Sat: 5 PM - 8 PM',
       specialitiesText: 'ENT & Psychiatry',
       bookingTitle: 'Book Appointment',
       bookingText:
@@ -183,7 +181,6 @@ const resources = {
       navServices: 'ಸೇವೆಗಳು',
       navDoctors: 'ವೈದ್ಯರು',
       navBook: 'ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಬುಕ್ ಮಾಡಿ',
-      heroTitle: 'ಮಂಗಳೂರುನಲ್ಲಿ ಸಮಗ್ರ ಮನಸ್ಸು ಮತ್ತು ENT ಆರೈಕೆ',
       heroTitlePre: 'ಮಂಗಳೂರುನಲ್ಲಿ ಸಮಗ್ರ ',
       heroHighlight1: 'ಮನಸ್ಸು',
       heroTitleMid: ' ಮತ್ತು ',
@@ -272,7 +269,6 @@ const resources = {
       hoursText: 'ಸೋಮ - ಶನಿ: ಸಂಜೆ 5:00 - ರಾತ್ರಿ 8:00',
       contactText: 'ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಮತ್ತು ಆನ್‌ಲೈನ್ ಸಮಾಲೋಚನೆಗೆ ವಾಟ್ಸಾಪ್',
       locationShort: 'ಸುರತ್ಕಲ್ ಜಂಕ್ಷನ್, ಮಂಗಳೂರು',
-      hoursShort: 'ಸೋಮ - ಶನಿ: ಸಂ 5 - ರಾ 8',
       specialitiesText: 'ENT ಮತ್ತು ಮಾನಸಿಕ ಆರೈಕೆ',
       bookingTitle: 'ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಬುಕ್ ಮಾಡಿ',
       bookingText:
@@ -357,7 +353,6 @@ const resources = {
       navServices: 'सेवाएँ',
       navDoctors: 'डॉक्टर',
       navBook: 'अपॉइंटमेंट बुक करें',
-      heroTitle: 'मैंगलोर में संपूर्ण माइंड और ENT देखभाल',
       heroTitlePre: 'मैंगलोर में संपूर्ण ',
       heroHighlight1: 'माइंड',
       heroTitleMid: ' और ',
@@ -446,7 +441,6 @@ const resources = {
       hoursText: 'सोम - शनि: शाम 5:00 - रात 8:00',
       contactText: 'अपॉइंटमेंट और ऑनलाइन परामर्श के लिए व्हाट्सऐप',
       locationShort: 'सुरथकल जंक्शन, मैंगलोर',
-      hoursShort: 'सोम - शनि: शा 5 - रा 8',
       specialitiesText: 'ENT और मनोरोग',
       bookingTitle: 'अपॉइंटमेंट बुक करें',
       bookingText:
