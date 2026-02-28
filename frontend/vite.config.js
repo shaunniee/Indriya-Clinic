@@ -9,5 +9,16 @@ export default defineConfig({
     // Chrome 87, Firefox 78 (ESR), Safari 14, Edge 88
     // This ensures optional chaining, nullish coalescing, etc. are transpiled correctly
     target: ['chrome87', 'firefox78', 'safari14', 'edge88'],
+    // Enable CSS code splitting so lazy-loaded routes load their own CSS
+    cssCodeSplit: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split vendor chunks for better caching
+          'router': ['react-router-dom'],
+          'i18n': ['i18next', 'react-i18next'],
+        },
+      },
+    },
   },
 })

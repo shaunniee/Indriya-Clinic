@@ -22,6 +22,8 @@ export function useScrollReveal() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible')
+            // Stop observing revealed elements to free resources
+            observer.unobserve(entry.target)
           }
         })
       },

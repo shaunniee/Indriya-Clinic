@@ -70,6 +70,7 @@ function HomePage() {
                   alt="Indriya Clinics"
                   width="240"
                   height="240"
+                  fetchPriority="high"
                   onError={(event) => { event.currentTarget.parentElement.style.display = 'none' }}
                 />
               </div>
@@ -273,6 +274,8 @@ function HomePage() {
               <iframe
                 title="Indriya Clinics Google Map"
                 src={mapEmbedUrl}
+                width="600"
+                height="400"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
