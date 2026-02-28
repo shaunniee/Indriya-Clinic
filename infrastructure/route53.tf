@@ -49,8 +49,14 @@ module "dns_records" {
         }
       }
 
-     
-      
     }
   }
+}
+
+resource "aws_route53_record" "google_site_verification" {
+  zone_id = var.hosted_zone_id
+  name    = "indriyaclinic.com"
+  type    = "TXT"
+  ttl     = 300
+  records = ["google-site-verification=VbY1RpN5pVN8i53smdn2YZDsqRTiHft0wCGfPZUEnzE"]
 }
