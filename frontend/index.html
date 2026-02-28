@@ -82,6 +82,55 @@
       body { background: #F5F9FC; min-width: 320px; font-family: 'Inter', 'Inter Fallback', system-ui, -apple-system, sans-serif; line-height: 1.6; color: #182C3E; -webkit-font-smoothing: antialiased; }
       #root { min-height: 100%; }
       img { max-width: 100%; height: auto; display: block; }
+
+      /* ── Static shell styles (visible before JS loads, replaced by React) ── */
+      .shell-header {
+        position: sticky; top: 0; z-index: 100;
+        background: rgba(255,255,255,0.98); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid #D6E3ED; box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+      }
+      .shell-header-inner {
+        height: 72px; display: flex; align-items: center; justify-content: space-between;
+        width: min(1100px, 90vw); margin: 0 auto; padding: 0 1rem;
+      }
+      .shell-brand { display: flex; gap: 0.65rem; align-items: center; text-decoration: none; color: inherit; }
+      .shell-brand img { width: 44px; height: 44px; object-fit: contain; border-radius: 10px; }
+      .shell-brand-title { font-family: 'Playfair Display', 'Playfair Fallback', Georgia, serif; font-size: 1.25rem; font-weight: 700; line-height: 1.2; }
+      .shell-brand-highlight { color: #D4820E; }
+      .shell-brand-sub { font-size: 0.72rem; color: #6E8FA8; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+      .shell-hero {
+        padding: 4.5rem 0 4rem; overflow: hidden;
+        background: linear-gradient(165deg, #fff 0%, #E6F3F9 40%, #e0f0f8 70%, #EBF2F8 100%);
+      }
+      .shell-hero-layout {
+        width: min(1100px, 90vw); margin: 0 auto; padding: 0 1rem;
+        display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center;
+      }
+      .shell-hero-content { max-width: 600px; }
+      .shell-hero h1 {
+        font-family: 'Playfair Display', 'Playfair Fallback', Georgia, serif;
+        font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem;
+      }
+      .shell-hero h1 .hl { color: #0F6F9A; }
+      .shell-hero p { color: #3D5A72; font-size: clamp(1rem, 2vw, 1.12rem); max-width: 520px; line-height: 1.7; }
+      .shell-badge {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        background: #E8F5ED; color: #2D8A4E; font-size: 0.82rem; font-weight: 600;
+        padding: 0.4rem 0.85rem; border-radius: 999px; margin-bottom: 1.25rem;
+        border: 1px solid rgba(74,157,63,0.15);
+      }
+      .shell-logo-circle {
+        width: 220px; height: 220px; border-radius: 50%;
+        background: rgba(255,255,255,0.7); border: 2px solid rgba(255,255,255,0.8);
+        box-shadow: 0 12px 40px rgba(27,107,147,0.12), 0 0 0 12px rgba(27,107,147,0.04);
+        display: flex; align-items: center; justify-content: center; padding: 2rem;
+      }
+      .shell-logo-circle img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+      @media (max-width: 768px) {
+        .shell-hero-layout { grid-template-columns: 1fr; text-align: center; }
+        .shell-hero-content { max-width: 100%; }
+        .shell-logo-circle { width: 160px; height: 160px; margin: 0 auto; }
+      }
     </style>
   </head>
   <body>
@@ -95,7 +144,37 @@
         <p>Mon–Sat: 5:00 PM – 8:00 PM | Online consultation available via WhatsApp</p>
       </div>
     </noscript>
-    <div id="root"></div>
+    <!-- Static shell — gives instant FCP, React replaces this on mount -->
+    <div id="root">
+      <div class="shell-header">
+        <div class="shell-header-inner">
+          <a href="/" class="shell-brand">
+            <img src="/logo.jpg" alt="Indriya Clinics logo" width="44" height="44" />
+            <div>
+              <p class="shell-brand-title">Indriya <span class="shell-brand-highlight">Clinics</span></p>
+              <p class="shell-brand-sub">Mind &amp; ENT Health Care</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="shell-hero">
+        <div class="shell-hero-layout">
+          <div class="shell-hero-content">
+            <div class="shell-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Specialist Care in Mangalore
+            </div>
+            <h1>Comprehensive <span class="hl">Mind</span> and <span class="hl">ENT</span> Care in Mangalore</h1>
+            <p>Indriya Clinics provides compassionate, specialist care for ENT and Psychiatry services with a patient-first approach.</p>
+          </div>
+          <div>
+            <div class="shell-logo-circle">
+              <img src="/logo.jpg" alt="Indriya Clinics" width="240" height="240" fetchpriority="high" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
