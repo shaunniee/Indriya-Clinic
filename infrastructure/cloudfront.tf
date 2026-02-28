@@ -1,3 +1,22 @@
+# ── Response Headers Policies (browser cache-control) ──
+
+# Hashed assets (/assets/*) — immutable, cache for 1 year
+resource "aws_cloudfront_response_headers_policy" "immutable_assets" {
+  name = "${var.name_prefix}-immutable-assets"
+
+  custom_headers_config {
+    items {
+      header   = "Cache-Control"
+      value    = "public, max-age=31536000, immutable"
+      override = true
+    }
+  }
+}
+
+
+
+# ── CloudFront Distribution ──
+
 module "cloudfront_public" {
   source            = "git::https://github.com/shaunniee/terraform_modules.git//aws_cloudfront?ref=main"
   aliases           = ["indriyaclinic.com", "www.indriyaclinic.com"]
@@ -18,8 +37,24 @@ module "cloudfront_public" {
 
   }
 
+  # Default behavior — CachingOptimized enables Brotli/gzip compression
   default_cache_behavior = {
     target_origin_id = "web-origin"
+    cache_policy_id  = "658327ea-f89d-4fab-a63d-7e88639e58f6" # Managed-CachingOptimized
+  }
+
+  # Hashed assets — immutable 1-year cache + compression
+  ordered_cache_behavior = {
+    assets = {
+      path_pattern               = "/assets/*"
+      target_origin_id           = "web-origin"
+      allowed_methods            = ["GET", "HEAD"]
+      cached_methods             = ["GET", "HEAD"]
+      cache_disabled             = false
+      requires_signed_url        = false
+      cache_policy_id            = "658327ea-f89d-4fab-a63d-7e88639e58f6" # Managed-CachingOptimized
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.immutable_assets.id
+    }
   }
 
 

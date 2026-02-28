@@ -59,8 +59,29 @@
     </noscript>
     <link rel="preload" href="/logo.jpg" as="image" />
     <style>
-      /* Critical above-the-fold color to prevent FOUC */
-      body { background: #F5F9FC; }
+      /* ── Font-metric fallbacks to eliminate CLS from font swap ── */
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('system-ui'), local('-apple-system'), local('Segoe UI'), local('sans-serif');
+        size-adjust: 107%;
+        ascent-override: 90%;
+        descent-override: 22%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: 'Playfair Fallback';
+        src: local('Georgia'), local('Times New Roman'), local('serif');
+        size-adjust: 112%;
+        ascent-override: 88%;
+        descent-override: 22%;
+        line-gap-override: 0%;
+      }
+
+      /* ── Critical above-the-fold styles ── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: #F5F9FC; min-width: 320px; font-family: 'Inter', 'Inter Fallback', system-ui, -apple-system, sans-serif; line-height: 1.6; color: #182C3E; -webkit-font-smoothing: antialiased; }
+      #root { min-height: 100%; }
+      img { max-width: 100%; height: auto; display: block; }
     </style>
   </head>
   <body>
