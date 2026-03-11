@@ -1,8 +1,9 @@
 export const clinicInfo = {
   name: 'Indriya Clinics',
   postalCode: '575014',
-  mapQuery: "Kudva's Grandeur, Surathkal, Mangaluru, Karnataka 575014, India",
-  mapFtid: '0x3ba3513df55a9b03:0x371482bdfd4ac059',
+  mapQuery: 'Indriya Clinic, Kuduva Grandeur Commercial Complex, MRPL Road, Surathkal, Mangaluru, Karnataka 575014, India',
+  mapFtid: '0x3ba3511f87eee317:0x12f2aea163bff201',
+  mapUrl: 'https://maps.app.goo.gl/QcbgEZvKpN3YABmy5',
   whatsappNumber: '+919449244651',
 }
 

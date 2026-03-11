@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
+import { BrowserRouter, Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { lazy, Suspense, useEffect, useState } from 'react'
 
@@ -9,6 +9,8 @@ const DoctorsPage = lazy(() => import('./pages/DoctorsPage'))
 const DoctorDetailPage = lazy(() => import('./pages/DoctorDetailPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
+const BlogListPage = lazy(() => import('./pages/BlogListPage'))
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage'))
 
 /* Lightweight loading fallback — no extra bundle weight */
 const PageLoading = () => (
@@ -116,9 +118,10 @@ function MobileMenu({ isOpen, onClose }) {
           </svg>
         </button>
         <nav className="mobile-nav" aria-label="Mobile navigation">
-          <Link to="/" onClick={onClose}>{t('navHome')}</Link>
-          <Link to="/services" onClick={onClose}>{t('navServices')}</Link>
-          <Link to="/doctors" onClick={onClose}>{t('navDoctors')}</Link>
+          <NavLink to="/" end onClick={onClose}>{t('navHome')}</NavLink>
+          <NavLink to="/services" onClick={onClose}>{t('navServices')}</NavLink>
+          <NavLink to="/doctors" onClick={onClose}>{t('navDoctors')}</NavLink>
+          <NavLink to="/blog" onClick={onClose}>{t('navBlog')}</NavLink>
           <Link to="/book" onClick={onClose}>{t('navBook')}</Link>
         </nav>
         <div className="mobile-lang" role="group" aria-label="Language selector">
@@ -179,9 +182,10 @@ function AppShell() {
           </Link>
 
           <nav className="main-nav" aria-label="Main navigation">
-            <Link to="/">{t('navHome')}</Link>
-            <Link to="/services">{t('navServices')}</Link>
-            <Link to="/doctors">{t('navDoctors')}</Link>
+            <NavLink to="/" end>{t('navHome')}</NavLink>
+            <NavLink to="/services">{t('navServices')}</NavLink>
+            <NavLink to="/doctors">{t('navDoctors')}</NavLink>
+            <NavLink to="/blog">{t('navBlog')}</NavLink>
             <Link to="/book" className="nav-cta">{t('navBook')}</Link>
           </nav>
 
@@ -213,6 +217,8 @@ function AppShell() {
             <Route path="/doctors" element={<DoctorsPage />} />
             <Route path="/doctors/:slug" element={<DoctorDetailPage />} />
             <Route path="/book" element={<BookingPage />} />
+            <Route path="/blog" element={<BlogListPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
@@ -253,6 +259,12 @@ function AppShell() {
               <ul>
                 <li><Link to="/#location">{t('locationShort')}</Link></li>
                 <li><Link to="/#location">{t('hoursText')}</Link></li>
+              </ul>
+            </div>
+            <div className="footer-section">
+              <h4>{t('navBlog')}</h4>
+              <ul>
+                <li><Link to="/blog">{t('blogTitle')}</Link></li>
               </ul>
             </div>
           </div>

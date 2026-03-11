@@ -55,7 +55,7 @@ function upsertHreflang(lang, href) {
   element.setAttribute('href', href)
 }
 
-function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
+function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
   const { t, i18n } = useTranslation()
 
   useEffect(() => {
@@ -65,7 +65,16 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
     const isDoctorDetail = page.startsWith('doctor-')
     const isPrivacy = page === 'privacy'
     const isNotFound = page === 'notfound'
+    const isBlog = page === 'blog'
+    const isBlogPost = page === 'blog-post'
 
+    // Clean up article meta tags from previous blog post pages
+    document.head.querySelectorAll('meta[property^=\"article:\"]').forEach((el) => el.remove())
+    // Clean up page-specific JSON-LD from previous pages
+    ;['faq-json-ld', 'breadcrumb-json-ld', 'services-page-json-ld', 'blog-article-json-ld'].forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) el.remove()
+    })
     // Page-specific titles & descriptions
     let title, description, keywords
     if (isNotFound) {
@@ -74,7 +83,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       keywords = clinicInfo.name
     } else if (isBooking) {
       title = `${t('bookingTitle')} | ${clinicInfo.name}, Mangalore`
-      description = `Book an ENT or Psychiatry appointment at ${clinicInfo.name}, Surathkal, Mangalore. Quick WhatsApp booking — no waiting on hold.`
+      description = `Book an ENT or Psychiatry appointment at ${clinicInfo.name}, Surathkal, Mangalore. In-person & online consultations available. Quick WhatsApp booking — no waiting on hold.`
       keywords = `book appointment Mangalore, ENT appointment Surathkal, psychiatry appointment Mangalore, WhatsApp doctor booking, ${t('seoKeywords')}`
     } else if (isServices) {
       title = t('seoServicesTitle')
@@ -92,6 +101,14 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       title = `${t('privacyTitle')} | ${clinicInfo.name}`
       description = `Privacy Policy for ${clinicInfo.name} — how we handle your personal information when using our WhatsApp booking service.`
       keywords = `privacy policy, ${clinicInfo.name}, data protection`
+    } else if (isBlog) {
+      title = t('seoBlogTitle')
+      description = t('seoBlogDescription')
+      keywords = `${t('seoBlogKeywords')}, ${t('seoKeywords')}`
+    } else if (isBlogPost && blogPost) {
+      title = `${blogPost.title} | ${clinicInfo.name}`
+      description = blogPost.excerpt || blogPost.title
+      keywords = `${(blogPost.tags || []).join(', ')}, ${t('seoKeywords')}`
     } else {
       title = t('seoTitle')
       description = t('seoDescription')
@@ -117,20 +134,40 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
     // Geo meta for local SEO
     upsertMeta('geo.region', 'IN-KA')
     upsertMeta('geo.placename', 'Surathkal, Mangalore')
-    upsertMeta('geo.position', '13.0067;74.7964')
-    upsertMeta('ICBM', '13.0067, 74.7964')
+    upsertMeta('geo.position', '13.0067;74.7935')
+    upsertMeta('ICBM', '13.0067, 74.7935')
 
     // Open Graph
+    const ogType = isBlogPost ? 'article' : 'website'
+    const ogImage = (isBlogPost && blogPost?.coverImage) ? blogPost.coverImage : `${window.location.origin}/logo.jpg`
+    const ogImageW = (isBlogPost && blogPost?.coverImage) ? '1200' : '512'
+    const ogImageH = (isBlogPost && blogPost?.coverImage) ? '630' : '512'
+    const ogImageAlt = (isBlogPost && blogPost) ? blogPost.title : `${clinicInfo.name} logo — Mind & ENT Health Care, Mangalore`
+
     upsertMeta('og:title', title, 'property')
     upsertMeta('og:description', description, 'property')
-    upsertMeta('og:type', 'website', 'property')
+    upsertMeta('og:type', ogType, 'property')
     upsertMeta('og:locale', ogLocale, 'property')
     upsertMeta('og:site_name', clinicInfo.name, 'property')
     upsertMeta('og:url', canonicalUrl, 'property')
-    upsertMeta('og:image', `${window.location.origin}/logo.jpg`, 'property')
-    upsertMeta('og:image:width', '512', 'property')
-    upsertMeta('og:image:height', '512', 'property')
-    upsertMeta('og:image:alt', `${clinicInfo.name} logo — Mind & ENT Health Care, Mangalore`, 'property')
+    upsertMeta('og:image', ogImage, 'property')
+    upsertMeta('og:image:width', ogImageW, 'property')
+    upsertMeta('og:image:height', ogImageH, 'property')
+    upsertMeta('og:image:alt', ogImageAlt, 'property')
+
+    // OG article tags for blog posts
+    if (isBlogPost && blogPost) {
+      upsertMeta('article:published_time', blogPost.publishedAt, 'property')
+      if (blogPost.updatedAt) upsertMeta('article:modified_time', blogPost.updatedAt, 'property')
+      upsertMeta('article:section', blogPost.category || 'Health', 'property')
+      upsertMeta('article:author', blogPost.author || clinicInfo.name, 'property')
+      ;(blogPost.tags || []).forEach((tag) => {
+        const el = document.createElement('meta')
+        el.setAttribute('property', 'article:tag')
+        el.setAttribute('content', tag)
+        document.head.appendChild(el)
+      })
+    }
 
     // og:locale:alternate — declare non-active locales
     document.head.querySelectorAll('meta[property="og:locale:alternate"]').forEach((el) => el.remove())
@@ -144,11 +181,11 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       })
 
     // Twitter
-    upsertMeta('twitter:card', 'summary', 'name')
+    upsertMeta('twitter:card', (isBlogPost && blogPost?.coverImage) ? 'summary_large_image' : 'summary', 'name')
     upsertMeta('twitter:title', title, 'name')
     upsertMeta('twitter:description', description, 'name')
-    upsertMeta('twitter:image', `${window.location.origin}/logo.jpg`, 'name')
-    upsertMeta('twitter:image:alt', `${clinicInfo.name} logo — Mind & ENT Health Care, Mangalore`, 'name')
+    upsertMeta('twitter:image', ogImage, 'name')
+    upsertMeta('twitter:image:alt', ogImageAlt, 'name')
 
     // Canonical
     upsertLink('canonical', canonicalUrl)
@@ -178,7 +215,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
         '@type': 'PostalAddress',
         streetAddress:
           '2nd floor, Kuduva Grandeur Commercial Complex, MRPL Road, Surathkal Junction',
-        addressLocality: 'Mangalore',
+        addressLocality: 'Surathkal, Mangalore',
         addressRegion: 'Karnataka',
         postalCode: clinicInfo.postalCode,
         addressCountry: 'IN',
@@ -186,7 +223,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       geo: {
         '@type': 'GeoCoordinates',
         latitude: 13.0067,
-        longitude: 74.7964,
+        longitude: 74.7935,
       },
       openingHoursSpecification: [
         {
@@ -196,25 +233,53 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
           closes: '20:00',
         },
       ],
+      virtualLocation: {
+        '@type': 'VirtualLocation',
+        name: 'Online Consultation via WhatsApp',
+        url: `${window.location.origin}/book`,
+      },
+      availableChannel: {
+        '@type': 'ServiceChannel',
+        serviceType: 'Online Consultation',
+        serviceUrl: `${window.location.origin}/book`,
+        availableLanguage: ['English', 'Kannada', 'Hindi'],
+      },
       medicalSpecialty: ['Otolaryngologic', 'Psychiatric'],
       availableLanguage: [
         { '@type': 'Language', name: 'English', alternateName: 'en' },
         { '@type': 'Language', name: 'Kannada', alternateName: 'kn' },
         { '@type': 'Language', name: 'Hindi', alternateName: 'hi' },
       ],
-      hasMap: `https://www.google.com/maps?q=${encodeURIComponent(clinicInfo.mapQuery)}&ftid=${clinicInfo.mapFtid}`,
+      hasMap: clinicInfo.mapUrl,
       priceRange: '$$',
       currenciesAccepted: 'INR',
       paymentAccepted: 'Cash, UPI',
-      contactPoint: clinicInfo.whatsappNumber ? {
-        '@type': 'ContactPoint',
-        telephone: clinicInfo.whatsappNumber,
-        contactType: 'appointment',
-        availableLanguage: ['English', 'Kannada', 'Hindi'],
-      } : undefined,
+      contactPoint: clinicInfo.whatsappNumber ? [
+        {
+          '@type': 'ContactPoint',
+          telephone: clinicInfo.whatsappNumber,
+          contactType: 'appointment',
+          availableLanguage: ['English', 'Kannada', 'Hindi'],
+        },
+        {
+          '@type': 'ContactPoint',
+          telephone: clinicInfo.whatsappNumber,
+          contactType: 'customer service',
+          availableLanguage: ['English', 'Kannada', 'Hindi'],
+          description: 'Online consultation and appointment booking via WhatsApp',
+        },
+      ] : undefined,
       areaServed: [
         { '@type': 'City', name: 'Mangalore' },
         { '@type': 'City', name: 'Surathkal' },
+        { '@type': 'City', name: 'Mukka' },
+        { '@type': 'City', name: 'Panambur' },
+        { '@type': 'City', name: 'Katipalla' },
+        { '@type': 'City', name: 'Bajpe' },
+        { '@type': 'City', name: 'Mulki' },
+        { '@type': 'City', name: 'Haleangady' },
+        { '@type': 'City', name: 'Udupi' },
+        { '@type': 'AdministrativeArea', name: 'Dakshina Kannada' },
         { '@type': 'AdministrativeArea', name: 'Karnataka' },
       ],
       availableService: [
@@ -224,6 +289,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
         { '@type': 'MedicalTherapy', name: 'Sleep Disorder Management' },
         { '@type': 'MedicalTherapy', name: 'Hearing Loss & Tinnitus Treatment' },
         { '@type': 'MedicalTherapy', name: 'Stress Management' },
+        { '@type': 'MedicalTherapy', name: 'Online Consultation via WhatsApp' },
       ],
       potentialAction: {
         '@type': 'ReserveAction',
@@ -241,13 +307,57 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
         },
       },
       sameAs: [
-        `https://www.google.com/maps?q=${encodeURIComponent(clinicInfo.mapQuery)}&ftid=${clinicInfo.mapFtid}`,
+        clinicInfo.mapUrl,
+        'https://share.google/xxuO7R9rjpYwxlmQ',
         'https://www.instagram.com/drjaswin_dsouza',
         'https://www.instagram.com/clinincstocontinents',
       ],
     }
 
     upsertJsonLd('clinic-json-ld', clinicSchema)
+
+    // WebSite schema — helps Google show sitelinks search box
+    const websiteSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      '@id': `${window.location.origin}/#website`,
+      name: clinicInfo.name,
+      alternateName: 'Indriya Clinics - Mind & ENT Health Care',
+      url: window.location.origin,
+      publisher: {
+        '@type': 'Organization',
+        '@id': `${window.location.origin}/#organization`,
+      },
+      inLanguage: ['en', 'kn', 'hi'],
+    }
+    upsertJsonLd('website-json-ld', websiteSchema)
+
+    // Organization schema — for brand knowledge panel
+    const organizationSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      '@id': `${window.location.origin}/#organization`,
+      name: clinicInfo.name,
+      url: window.location.origin,
+      logo: `${window.location.origin}/logo.jpg`,
+      image: `${window.location.origin}/logo.jpg`,
+      telephone: clinicInfo.whatsappNumber || undefined,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '2nd floor, Kuduva Grandeur Commercial Complex, MRPL Road, Surathkal Junction',
+        addressLocality: 'Mangalore',
+        addressRegion: 'Karnataka',
+        postalCode: clinicInfo.postalCode,
+        addressCountry: 'IN',
+      },
+      sameAs: [
+        clinicInfo.mapUrl,
+        'https://share.google/xxuO7R9rjpYwxlmQ',
+        'https://www.instagram.com/drjaswin_dsouza',
+        'https://www.instagram.com/clinincstocontinents',
+      ],
+    }
+    upsertJsonLd('organization-json-ld', organizationSchema)
 
     // Physician schema for each doctor
     const doctorSchemas = doctors.map((doctor) => ({
@@ -260,6 +370,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       image: `${window.location.origin}/logo.jpg`,
       medicalSpecialty: doctor.specialty === 'ENT' ? 'Otolaryngologic' : 'Psychiatric',
       qualification: doctor.qualification,
+      isAcceptingNewPatients: true,
       knowsLanguage: doctor.languages.map((lang) => ({ '@type': 'Language', name: lang })),
       worksFor: {
         '@type': 'MedicalClinic',
@@ -269,17 +380,21 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       address: {
         '@type': 'PostalAddress',
         streetAddress: '2nd floor, Kuduva Grandeur Commercial Complex, MRPL Road, Surathkal Junction',
-        addressLocality: 'Mangalore',
+        addressLocality: 'Surathkal, Mangalore',
         addressRegion: 'Karnataka',
         postalCode: clinicInfo.postalCode,
         addressCountry: 'IN',
       },
+      availableService: [
+        { '@type': 'MedicalTherapy', name: 'In-Person Consultation' },
+        { '@type': 'MedicalTherapy', name: 'Online Consultation via WhatsApp' },
+      ],
     }))
 
     upsertJsonLd('doctors-json-ld', doctorSchemas)
 
-    // FAQ schema (helps with Google featured snippets)
-    if (!isBooking && !isServices && !isDoctors && !isDoctorDetail) {
+    // FAQ schema (helps with Google featured snippets) — only on home page
+    if (page === 'home') {
       const faqSchema = {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
@@ -402,20 +517,25 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       upsertJsonLd('faq-json-ld', faqSchema)
     }
 
-    // Breadcrumb schema — booking, services, doctors pages
-    if (isBooking || isServices || isDoctors || isDoctorDetail) {
+    // Breadcrumb schema — booking, services, doctors, blog pages
+    if (isBooking || isServices || isDoctors || isDoctorDetail || isBlog || isBlogPost) {
       let crumbLabel, crumbUrl
       if (isBooking) { crumbLabel = 'Book Appointment'; crumbUrl = `${window.location.origin}/book` }
       else if (isServices) { crumbLabel = 'Services'; crumbUrl = `${window.location.origin}/services` }
       else if (isDoctors) { crumbLabel = 'Doctors'; crumbUrl = `${window.location.origin}/doctors` }
+      else if (isBlog) { crumbLabel = 'Blog'; crumbUrl = `${window.location.origin}/blog` }
+      else if (isBlogPost) { crumbLabel = 'Blog'; crumbUrl = `${window.location.origin}/blog` }
       else { crumbLabel = title; crumbUrl = `${window.location.origin}${window.location.pathname}` }
 
       const items = [
         { '@type': 'ListItem', position: 1, name: 'Home', item: window.location.origin },
-        { '@type': 'ListItem', position: 2, name: isDoctorDetail ? 'Doctors' : crumbLabel, item: isDoctorDetail ? `${window.location.origin}/doctors` : crumbUrl },
+        { '@type': 'ListItem', position: 2, name: (isDoctorDetail || isBlogPost) ? crumbLabel : crumbLabel, item: (isDoctorDetail) ? `${window.location.origin}/doctors` : crumbUrl },
       ]
       if (isDoctorDetail) {
         items.push({ '@type': 'ListItem', position: 3, name: title, item: `${window.location.origin}${window.location.pathname}` })
+      }
+      if (isBlogPost && blogPost) {
+        items.push({ '@type': 'ListItem', position: 3, name: blogPost.title, item: `${window.location.origin}/blog/${blogPost.slug}` })
       }
       upsertJsonLd('breadcrumb-json-ld', { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items })
     }
@@ -439,7 +559,96 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey }) {
       }
       upsertJsonLd('services-page-json-ld', servicePageSchema)
     }
-  }, [i18n.language, t, page, doctorSeoTitleKey, doctorSeoDescKey])
+
+    // Article schema for blog posts — BlogPosting with local SEO signals
+    if (isBlogPost && blogPost) {
+      // Resolve author: use Person schema for doctors, Organization for clinic
+      const doctorMap = {
+        "Dr. Jaswin D'Souza": doctors.find((d) => d.slug === 'dr-jaswin-dsouza'),
+        "Dr. Vinitha D'Souza": doctors.find((d) => d.slug === 'dr-vinitha-dsouza'),
+      }
+      const matchedDoctor = blogPost.author ? doctorMap[blogPost.author] : null
+      const authorSchema = matchedDoctor
+        ? {
+            '@type': 'Person',
+            '@id': `${window.location.origin}/doctors/${matchedDoctor.slug}#physician`,
+            name: matchedDoctor.name,
+            url: `${window.location.origin}/doctors/${matchedDoctor.slug}`,
+            jobTitle: matchedDoctor.specialtyFull,
+            worksFor: { '@type': 'MedicalClinic', '@id': `${window.location.origin}/#clinic` },
+          }
+        : {
+            '@type': 'Organization',
+            '@id': `${window.location.origin}/#organization`,
+            name: clinicInfo.name,
+            url: window.location.origin,
+          }
+
+      // Map category to medical specialty
+      const specialtyMap = {
+        ENT: 'Otolaryngology',
+        'Mental Health': 'Psychiatry',
+      }
+
+      const articleSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        '@id': `${window.location.origin}/blog/${blogPost.slug}#article`,
+        headline: blogPost.title,
+        description: blogPost.excerpt || blogPost.title,
+        url: `${window.location.origin}/blog/${blogPost.slug}`,
+        datePublished: blogPost.publishedAt,
+        dateModified: blogPost.updatedAt || blogPost.publishedAt,
+        image: blogPost.coverImage || `${window.location.origin}/logo.jpg`,
+        wordCount: blogPost.wordCount || undefined,
+        author: authorSchema,
+        publisher: {
+          '@type': 'Organization',
+          '@id': `${window.location.origin}/#organization`,
+          name: clinicInfo.name,
+          logo: {
+            '@type': 'ImageObject',
+            url: `${window.location.origin}/logo.jpg`,
+          },
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': `${window.location.origin}/blog/${blogPost.slug}`,
+        },
+        isPartOf: {
+          '@type': 'WebSite',
+          '@id': `${window.location.origin}/#website`,
+        },
+        keywords: (blogPost.tags || []).join(', '),
+        articleSection: blogPost.category || 'Health',
+        inLanguage: 'en',
+        // Speakable — eligible for Google Assistant voice results
+        speakable: {
+          '@type': 'SpeakableSpecification',
+          cssSelector: ['.blog-post-header h1', '.blog-post-body'],
+        },
+        // Local SEO: connect article to the clinic location
+        about: [
+          { '@type': 'MedicalClinic', '@id': `${window.location.origin}/#clinic` },
+          ...(blogPost.category && specialtyMap[blogPost.category]
+            ? [{ '@type': 'MedicalSpecialty', name: specialtyMap[blogPost.category] }]
+            : []),
+        ],
+        // Content location — signals local relevance
+        contentLocation: {
+          '@type': 'Place',
+          name: 'Indriya Clinics, Surathkal, Mangalore',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Mangalore',
+            addressRegion: 'Karnataka',
+            addressCountry: 'IN',
+          },
+        },
+      }
+      upsertJsonLd('blog-article-json-ld', articleSchema)
+    }
+  }, [i18n.language, t, page, doctorSeoTitleKey, doctorSeoDescKey, blogPost])
 
   return null
 }

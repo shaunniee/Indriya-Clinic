@@ -1,9 +1,17 @@
 version: 0.2
 
+env:
+  variables:
+    SANITY_PROJECT_ID: "6za6g18l"
+    SANITY_DATASET: "production"
+
 phases:
   install:
     runtime-versions:
       nodejs: 20
+    commands:
+      # Chrome dependencies needed for Puppeteer pre-rendering
+      - apt-get update -qq && apt-get install -y -qq --no-install-recommends libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxdamage1 libxrandr2 libxkbcommon0 libgbm1 libpango-1.0-0 libcairo2 libasound2 libnspr4 libnss3 libxcomposite1 libxfixes3 > /dev/null 2>&1
   build:
     commands:
       - cd "$CODEBUILD_SRC_DIR/frontend"

@@ -6,3 +6,6 @@ terraform.tfstate.backup
 .terraformrc
 .node_modules/
 *.docx
+.env
+.env.*
+.vscode/

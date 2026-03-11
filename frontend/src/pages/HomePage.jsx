@@ -12,7 +12,7 @@ function HomePage() {
 
   const encodedMapQuery = encodeURIComponent(clinicInfo.mapQuery)
   const mapEmbedUrl = `https://www.google.com/maps?q=${encodedMapQuery}&ftid=${clinicInfo.mapFtid}&output=embed`
-  const mapOpenUrl = `https://www.google.com/maps?q=${encodedMapQuery}&ftid=${clinicInfo.mapFtid}`
+  const mapOpenUrl = clinicInfo.mapUrl
 
   const entTagKeys = ['tagEar', 'tagNose', 'tagThroat', 'tagAllergy', 'tagSinus']
   const psychiatryTagKeys = ['tagAnxiety', 'tagDepression', 'tagSleep', 'tagStress', 'tagMood']

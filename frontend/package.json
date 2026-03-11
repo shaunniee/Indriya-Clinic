@@ -5,11 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "fetch-posts": "node --env-file-if-exists=.env scripts/fetch-posts.js",
+    "prerender": "node scripts/prerender.js",
+    "build": "npm run fetch-posts && vite build && npm run prerender",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@portabletext/to-html": "^5.0.2",
+    "@sanity/client": "^7.17.0",
     "i18next": "^25.8.13",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -25,6 +29,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "puppeteer": "^24.39.0",
     "vite": "^7.3.1"
   }
 }
