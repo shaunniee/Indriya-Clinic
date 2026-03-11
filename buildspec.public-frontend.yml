@@ -10,8 +10,24 @@ phases:
     runtime-versions:
       nodejs: 20
     commands:
-      # Chrome dependencies needed for Puppeteer pre-rendering
-      - apt-get update -qq && apt-get install -y -qq --no-install-recommends libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxdamage1 libxrandr2 libxkbcommon0 libgbm1 libpango-1.0-0 libcairo2 libasound2 libnspr4 libnss3 libxcomposite1 libxfixes3 > /dev/null 2>&1
+      # Chrome dependencies needed for Puppeteer pre-rendering (Amazon Linux 2 / AL2023)
+      - |
+        if command -v apt-get &>/dev/null; then
+          apt-get update -qq && apt-get install -y -qq --no-install-recommends \
+            libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxdamage1 \
+            libxrandr2 libxkbcommon0 libgbm1 libpango-1.0-0 libcairo2 \
+            libasound2 libnspr4 libnss3 libxcomposite1 libxfixes3 > /dev/null 2>&1
+        elif command -v dnf &>/dev/null; then
+          dnf install -y -q \
+            atk at-spi2-atk cups-libs libdrm libXdamage libXrandr \
+            libxkbcommon mesa-libgbm pango cairo alsa-lib nspr nss \
+            libXcomposite libXfixes > /dev/null 2>&1
+        elif command -v yum &>/dev/null; then
+          yum install -y -q \
+            atk at-spi2-atk cups-libs libdrm libXdamage libXrandr \
+            libxkbcommon mesa-libgbm pango cairo alsa-lib nspr nss \
+            libXcomposite libXfixes > /dev/null 2>&1
+        fi
   build:
     commands:
       - cd "$CODEBUILD_SRC_DIR/frontend"
