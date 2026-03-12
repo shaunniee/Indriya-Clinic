@@ -11,30 +11,26 @@ export function useScrollReveal() {
   useEffect(() => {
     const elements = ref.current?.querySelectorAll('.fade-up')
 
-    // Graceful degradation: if IntersectionObserver is unavailable, show all elements immediately
+    // Graceful degradation: if IntersectionObserver is unavailable, leave everything visible
     if (!('IntersectionObserver' in window) || !elements?.length) {
-      elements?.forEach((el) => el.classList.add('visible'))
       return
     }
 
-    // Pre-mark elements already in viewport as visible BEFORE enabling animations
-    // This prevents a flash of invisible content on first load
+    // Only hide elements that are BELOW the viewport — above-fold stays visible always
     elements.forEach((el) => {
       const rect = el.getBoundingClientRect()
-      if (rect.top < window.innerHeight + 40) {
-        el.classList.add('visible')
+      if (rect.top >= window.innerHeight) {
+        el.style.opacity = '0'
+        el.style.transform = 'translateY(30px)'
       }
     })
-
-    // Now safe to enable fade-up animations (hidden elements will animate in on scroll)
-    document.documentElement.classList.add('js-ready')
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible')
-            // Stop observing revealed elements to free resources
+            entry.target.style.opacity = '1'
+            entry.target.style.transform = 'translateY(0)'
             observer.unobserve(entry.target)
           }
         })
@@ -42,9 +38,9 @@ export function useScrollReveal() {
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     )
 
-    // Only observe elements that aren't already visible
     elements.forEach((el) => {
-      if (!el.classList.contains('visible')) {
+      // Only observe elements we actually hid
+      if (el.style.opacity === '0') {
         observer.observe(el)
       }
     })

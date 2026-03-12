@@ -23,16 +23,9 @@ main {
 
 /* ===== SCROLL ANIMATIONS ===== */
 
-/* fade-up: hidden only after JS signals readiness */
-.js-ready .fade-up {
-  opacity: 0;
-  transform: translateY(30px);
+/* fade-up: transition only — JS sets initial opacity via inline styles */
+.fade-up {
   transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.js-ready .fade-up.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .fade-up.delay-1 { transition-delay: 0.1s; }

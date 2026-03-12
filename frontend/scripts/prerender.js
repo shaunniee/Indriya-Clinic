@@ -103,13 +103,6 @@ async function prerender() {
       html = html.replaceAll(`http://localhost:${port}`, PROD_ORIGIN)
       html = html.replaceAll(encodeURIComponent(`http://localhost:${port}`), encodeURIComponent(PROD_ORIGIN))
 
-      // Strip js-ready class so pre-rendered content stays visible
-      // (the inline script will re-add it when JS loads in the browser)
-      html = html.replace(/<html([^>]*) class="js-ready"/, '<html$1')
-
-      // Strip 'visible' from fade-up elements so scroll-reveal works fresh after hydration
-      html = html.replaceAll('fade-up visible', 'fade-up')
-
       // Write the HTML to the correct path
       const outDir = route === '/' ? distDir : path.join(distDir, route)
       if (!fs.existsSync(outDir)) {
