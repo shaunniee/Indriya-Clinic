@@ -13,9 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Trigger rebuild via empty commit
+      - name: Trigger rebuild
         run: |
           git config user.name "sanity-bot"
           git config user.email "bot@indriyaclinic.com"
-          git commit --allow-empty -m "chore: rebuild site (Sanity content update)"
+          date -u +%Y-%m-%dT%H:%M:%SZ > frontend/.sanity-rebuild
+          git add frontend/.sanity-rebuild
+          git commit -m "chore: rebuild site (Sanity content update)"
           git push
