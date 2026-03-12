@@ -99,8 +99,9 @@ async function prerender() {
       // Remove any Vite HMR / dev scripts if present
       html = html.replace(/<script[^>]*type="module"[^>]*src="\/@vite[^"]*"[^>]*><\/script>/g, '')
 
-      // Replace local dev URLs with production origin
+      // Replace local dev URLs with production origin (both raw and URL-encoded)
       html = html.replaceAll(`http://localhost:${port}`, PROD_ORIGIN)
+      html = html.replaceAll(encodeURIComponent(`http://localhost:${port}`), encodeURIComponent(PROD_ORIGIN))
 
       // Strip js-ready class so pre-rendered content stays visible
       // (the inline script will re-add it when JS loads in the browser)

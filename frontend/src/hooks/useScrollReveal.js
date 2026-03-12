@@ -17,6 +17,18 @@ export function useScrollReveal() {
       return
     }
 
+    // Pre-mark elements already in viewport as visible BEFORE enabling animations
+    // This prevents a flash of invisible content on first load
+    elements.forEach((el) => {
+      const rect = el.getBoundingClientRect()
+      if (rect.top < window.innerHeight + 40) {
+        el.classList.add('visible')
+      }
+    })
+
+    // Now safe to enable fade-up animations (hidden elements will animate in on scroll)
+    document.documentElement.classList.add('js-ready')
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -30,7 +42,12 @@ export function useScrollReveal() {
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     )
 
-    elements.forEach((el) => observer.observe(el))
+    // Only observe elements that aren't already visible
+    elements.forEach((el) => {
+      if (!el.classList.contains('visible')) {
+        observer.observe(el)
+      }
+    })
 
     return () => observer.disconnect()
   }, [])
