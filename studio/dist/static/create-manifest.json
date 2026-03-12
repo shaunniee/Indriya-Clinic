@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "createdAt": "2026-03-11T16:51:47.569Z",
+  "createdAt": "2026-03-12T09:03:50.124Z",
   "workspaces": [
     {
       "name": "indriya-clinics",
@@ -13,7 +13,7 @@
         "enabled": false,
         "__internal": {}
       },
-      "schema": "183eb409.create-schema.json",
+      "schema": "58917688.create-schema.json",
       "tools": "ba47da56.create-tools.json"
     }
   ],

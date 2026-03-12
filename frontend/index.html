@@ -25,6 +25,7 @@
     <meta property="og:image" content="https://www.indriyaclinic.com/logo.jpg" />
     <meta property="og:url" content="https://www.indriyaclinic.com/" />
     <meta property="og:site_name" content="Indriya Clinics" />
+    <meta property="og:locale" content="en_IN" />
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
     <meta property="og:image:alt" content="Indriya Clinics logo — Mind &amp; ENT Health Care, Mangalore" />
@@ -161,11 +162,12 @@
         .cta-row .btn-primary, .cta-row .btn-secondary, .cta-row .btn-whatsapp { width: 100%; text-align: center; }
       }
 
-      /* Scroll reveal — start visible in shell, CSS file overrides to hidden */
+      /* Scroll reveal — content visible by default until JS loads */
       .fade-up { opacity: 1; transform: none; }
     </style>
   </head>
   <body>
+    <script>document.documentElement.classList.add('js-ready')</script>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <noscript>
       <div style="padding:2rem;text-align:center;font-family:system-ui,sans-serif">

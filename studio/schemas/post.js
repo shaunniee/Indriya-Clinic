@@ -4,6 +4,10 @@ export default defineType({
   name: 'post',
   title: 'Blog Post',
   type: 'document',
+  groups: [
+    { name: 'content', title: 'Content', default: true },
+    { name: 'seo', title: 'SEO' },
+  ],
   fields: [
     defineField({
       name: 'title',
@@ -93,6 +97,23 @@ export default defineType({
       of: [{ type: 'string' }],
       options: { layout: 'tags' },
       description: 'E.g. ENT, Mental Health, Ear Care, Tips',
+    }),
+    defineField({
+      name: 'seoTitle',
+      title: 'SEO Title Override',
+      type: 'string',
+      description: 'Custom title for search engines (max 60 chars). Leave empty to use the post title.',
+      validation: (rule) => rule.max(60),
+      group: 'seo',
+    }),
+    defineField({
+      name: 'seoDescription',
+      title: 'SEO Description Override',
+      type: 'text',
+      rows: 2,
+      description: 'Custom meta description for search engines (max 160 chars). Leave empty to use the excerpt.',
+      validation: (rule) => rule.max(160),
+      group: 'seo',
     }),
     defineField({
       name: 'publishedAt',

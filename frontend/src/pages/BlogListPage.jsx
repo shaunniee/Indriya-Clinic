@@ -24,7 +24,7 @@ function BlogListPage() {
       <section className="section">
         <div className="container">
           <div className="section-header fade-up">
-            <h2>{t('blogTitle')}</h2>
+            <h1>{t('blogTitle')}</h1>
             <p>{t('blogSubtitle')}</p>
             <div className="section-divider" />
           </div>

@@ -29,6 +29,8 @@ const posts = await client.fetch(`
     author,
     category,
     tags,
+    seoTitle,
+    seoDescription,
     publishedAt,
     "updatedAt": _updatedAt,
     "coverImage": coverImage.asset->url,
@@ -85,13 +87,16 @@ if (fs.existsSync(sitemapPath)) {
   // Individual posts
   for (const post of postsWithHtml) {
     const postDate = post.publishedAt ? post.publishedAt.split('T')[0] : today
+    const imageTag = post.coverImage
+      ? `\n    <image:image>\n      <image:loc>${post.coverImage}</image:loc>\n      <image:title>${post.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')}</image:title>\n    </image:image>`
+      : ''
     blogEntries += `
   <url>
     <loc>https://www.indriyaclinic.com/blog/${post.slug}</loc>
     <lastmod>${postDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.indriyaclinic.com/blog/${post.slug}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.indriyaclinic.com/blog/${post.slug}" />${imageTag}
   </url>`
   }
 

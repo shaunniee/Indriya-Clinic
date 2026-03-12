@@ -1,12 +1,21 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import './index.css'
 import './styles.css'
 import App from './App.jsx'
 import './i18n.js'
 
-createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root')
+const app = (
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>
 )
+
+// Use hydrateRoot for pre-rendered pages (content already in DOM),
+// createRoot for SPA-navigated empty shells
+if (rootElement.hasChildNodes()) {
+  hydrateRoot(rootElement, app)
+} else {
+  createRoot(rootElement).render(app)
+}

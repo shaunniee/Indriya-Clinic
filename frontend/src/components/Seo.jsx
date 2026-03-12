@@ -106,8 +106,8 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
       description = t('seoBlogDescription')
       keywords = `${t('seoBlogKeywords')}, ${t('seoKeywords')}`
     } else if (isBlogPost && blogPost) {
-      title = `${blogPost.title} | ${clinicInfo.name}`
-      description = blogPost.excerpt || blogPost.title
+      title = blogPost.seoTitle || `${blogPost.title} | ${clinicInfo.name}`
+      description = blogPost.seoDescription || blogPost.excerpt || blogPost.title
       keywords = `${(blogPost.tags || []).join(', ')}, ${t('seoKeywords')}`
     } else {
       title = t('seoTitle')
@@ -186,6 +186,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
     upsertMeta('twitter:description', description, 'name')
     upsertMeta('twitter:image', ogImage, 'name')
     upsertMeta('twitter:image:alt', ogImageAlt, 'name')
+    upsertMeta('twitter:site', '@IndriyaClinics', 'name')
 
     // Canonical
     upsertLink('canonical', canonicalUrl)
@@ -388,7 +389,9 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
       availableService: [
         { '@type': 'MedicalTherapy', name: 'In-Person Consultation' },
         { '@type': 'MedicalTherapy', name: 'Online Consultation via WhatsApp' },
+        ...doctor.conditions.slice(0, 10).map((c) => ({ '@type': 'MedicalTherapy', name: c })),
       ],
+      knowsAbout: doctor.conditions.map((c) => ({ '@type': 'MedicalCondition', name: c })),
     }))
 
     upsertJsonLd('doctors-json-ld', doctorSchemas)

@@ -37,4 +37,13 @@ phases:
     commands:
       - cd "$CODEBUILD_SRC_DIR/frontend"
       - aws s3 sync dist/ "s3://${S3_BUCKET}" --delete
+      # Upload pre-rendered HTML to clean URL S3 keys (without /index.html)
+      # so CloudFront serves real content instead of empty SPA shell
+      - |
+        find dist -name "index.html" -not -path "dist/index.html" | while read f; do
+          key=$(echo "$f" | sed 's|^dist/||;s|/index.html$||')
+          aws s3 cp "$f" "s3://${S3_BUCKET}/${key}" \
+            --content-type "text/html; charset=utf-8" \
+            --cache-control "public, max-age=0, must-revalidate"
+        done
       - aws cloudfront create-invalidation --distribution-id "${CF_DISTRIBUTION_ID}" --paths "/*"
