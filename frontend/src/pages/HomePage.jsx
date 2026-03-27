@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { clinicInfo, doctors } from '../clinicData'
 import Seo from '../components/Seo'
-import { EarIcon, BrainIcon, WhatsAppIcon, MapPinIcon, PhoneIcon, ClockIcon, CheckCircleIcon, ShieldIcon, HeartIcon, CalendarIcon } from '../components/Icons'
+import { EarIcon, BrainIcon, WhatsAppIcon, MapPinIcon, PhoneIcon, ClockIcon, CheckCircleIcon, ShieldIcon, HeartIcon, CalendarIcon, getSpecialtyIcon } from '../components/Icons'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { getInitials } from '../utils/helpers'
 
@@ -10,8 +10,7 @@ function HomePage() {
   const { t } = useTranslation()
   const pageRef = useScrollReveal()
 
-  const mapCoordinates = `${clinicInfo.latitude},${clinicInfo.longitude}`
-  const mapEmbedUrl = `https://www.google.com/maps?q=${mapCoordinates}&z=17&output=embed`
+  const mapEmbedUrl = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.72775683405!2d74.79726048525916!3d12.989256654653257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba3511f87eee317%3A0x12f2aea163bff201!2sIndriya%20Clinic%20-%20ENT%20%26%20Psychiatry%20center%20Dr%20Jaswin%20Dsouza%20(%20ENT%20specialist)%20%2B%20Dr%20Vinitha%20Dsouza%20(%20Psychiatrist)!5e0!3m2!1sen!2sie!4v1774615908697!5m2!1sen!2sie'
   const mapOpenUrl = clinicInfo.mapUrl
 
   const entTagKeys = ['tagEar', 'tagNose', 'tagThroat', 'tagAllergy', 'tagSinus']
@@ -207,7 +206,7 @@ function HomePage() {
                 <h3>{doctor.name}</h3>
                 <p className="doctor-qualification">{doctor.qualification}</p>
                 <span className={`doctor-specialty ${doctor.specialty.toLowerCase()}`}>
-                  {doctor.specialty === 'ENT' ? <EarIcon size={14} /> : <BrainIcon size={14} />}
+                  {getSpecialtyIcon(doctor.specialty, 14)}
                   {doctor.specialtyFull}
                 </span>
                   <p className="doctor-bio">{doctor.bio || t(doctor.bioKey)}</p>

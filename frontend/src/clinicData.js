@@ -5,7 +5,7 @@ export const clinicInfo = {
   mapFtid: '0x3ba3511f87eee317:0x12f2aea163bff201',
   mapUrl: 'https://maps.app.goo.gl/utRrmqkv68YVFCnn6',
   latitude: 12.9892567,
-  longitude: 74.8021314,
+  longitude: 74.7972605,
   whatsappNumber: '+919449244651',
 }
 

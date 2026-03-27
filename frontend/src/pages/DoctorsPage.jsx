@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { doctors } from '../clinicData'
 import Seo from '../components/Seo'
-import { EarIcon, BrainIcon, ArrowRightIcon, CheckIcon, GlobeIcon, WhatsAppIcon, ClockIcon } from '../components/Icons'
+import { ArrowRightIcon, CheckIcon, GlobeIcon, WhatsAppIcon, ClockIcon, getSpecialtyIcon } from '../components/Icons'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { getInitials } from '../utils/helpers'
 
@@ -39,7 +39,6 @@ function DoctorsPage() {
         <div className="container">
           <div className="doctors-listing-grid">
             {doctors.map((doctor, index) => {
-              const isEnt = doctor.specialty === 'ENT'
               const tagline = doctor.tagline || t(doctor.taglineBioKey)
               const bio = doctor.bio || t(doctor.bioKey)
               return (
@@ -60,7 +59,7 @@ function DoctorsPage() {
                   {/* Info */}
                   <div className="doctor-profile-body">
                     <div className={`doctor-profile-badge ${doctor.specialty.toLowerCase()}`}>
-                      {isEnt ? <EarIcon size={13} /> : <BrainIcon size={13} />}
+                      {getSpecialtyIcon(doctor.specialty, 13)}
                       {doctor.specialty}
                     </div>
                     <h2 className="doctor-profile-name">{doctor.name}</h2>

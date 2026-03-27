@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { services, doctors } from '../clinicData'
 import Seo from '../components/Seo'
-import { EarIcon, BrainIcon, CheckIcon, WhatsAppIcon, HeartIcon } from '../components/Icons'
+import { CheckIcon, WhatsAppIcon, getSpecialtyIcon } from '../components/Icons'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 
 /* ── Service section component ── */
@@ -79,30 +79,30 @@ function ServicesPage() {
     ent: {
       titleKey: 'entDetailTitle',
       bodyKey: 'entDetailBody',
-      icon: <EarIcon size={28} />,
+      icon: getSpecialtyIcon('ENT', 28),
       ctaKey: 'serviceEntTitle',
-      ctaIcon: <EarIcon size={16} />,
+      ctaIcon: getSpecialtyIcon('ENT', 16),
     },
     psychiatry: {
       titleKey: 'psychiatryDetailTitle',
       bodyKey: 'psychiatryDetailBody',
-      icon: <BrainIcon size={28} />,
+      icon: getSpecialtyIcon('Psychiatry', 28),
       ctaKey: 'servicePsychiatryTitle',
-      ctaIcon: <BrainIcon size={16} />,
+      ctaIcon: getSpecialtyIcon('Psychiatry', 16),
     },
     pediatrics: {
       titleKey: 'pediatricsDetailTitle',
       bodyKey: 'pediatricsDetailBody',
-      icon: <HeartIcon size={28} />,
+      icon: getSpecialtyIcon('Pediatrics', 28),
       ctaKey: 'servicePediatricsTitle',
-      ctaIcon: <HeartIcon size={16} />,
+      ctaIcon: getSpecialtyIcon('Pediatrics', 16),
     },
     neurosurgery: {
       titleKey: 'neurosurgeryDetailTitle',
       bodyKey: 'neurosurgeryDetailBody',
-      icon: <BrainIcon size={28} />,
+      icon: getSpecialtyIcon('Neurosurgery', 28),
       ctaKey: 'serviceNeurosurgeryTitle',
-      ctaIcon: <BrainIcon size={16} />,
+      ctaIcon: getSpecialtyIcon('Neurosurgery', 16),
     },
   }
 

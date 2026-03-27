@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { doctors, clinicInfo } from '../clinicData'
 import Seo from '../components/Seo'
-import { EarIcon, BrainIcon, CheckIcon, WhatsAppIcon, GlobeIcon, BuildingIcon, ClockIcon } from '../components/Icons'
+import { CheckIcon, WhatsAppIcon, GlobeIcon, BuildingIcon, ClockIcon, getSpecialtyIcon } from '../components/Icons'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { getInitials } from '../utils/helpers'
 
@@ -64,7 +64,7 @@ function DoctorDetailPage() {
             {/* Text block */}
             <div className="doctor-detail-hero-text">
               <div className={`doctor-profile-badge ${doctor.specialty.toLowerCase()}`} style={{ marginBottom: '0.6rem' }}>
-                {isEnt ? <EarIcon size={14} /> : <BrainIcon size={14} />}
+                {getSpecialtyIcon(doctor.specialty, 14)}
                 {doctor.specialty}
               </div>
               <h1>{doctor.name}</h1>
@@ -142,7 +142,7 @@ function DoctorDetailPage() {
                   className="btn-secondary"
                   style={{ display: 'inline-flex', fontSize: '0.88rem' }}
                 >
-                  {isEnt ? <EarIcon size={15} /> : <BrainIcon size={15} />}
+                  {getSpecialtyIcon(doctor.specialty, 15)}
                   {t('viewAllServices')}
                 </Link>
               </div>
