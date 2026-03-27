@@ -83,7 +83,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, doctorSeoTitl
       keywords = clinicInfo.name
     } else if (isBooking) {
       title = `${t('bookingTitle')} | ${clinicInfo.name}, Mangalore`
-      description = `Book an ENT or Psychiatry appointment at ${clinicInfo.name}, Surathkal, Mangalore. In-person & online consultations available. Quick WhatsApp booking — no waiting on hold.`
+      description = `Book an appointment at ${clinicInfo.name}, Surathkal, Mangalore. Specialist ENT, Psychiatry, Pediatrics, and Neurosurgery consultations available. Quick WhatsApp booking.`
       keywords = `book appointment Mangalore, ENT appointment Surathkal, psychiatry appointment Mangalore, WhatsApp doctor booking, ${t('seoKeywords')}`
     } else if (isServices) {
       title = t('seoServicesTitle')
@@ -370,7 +370,9 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, doctorSeoTitl
             ? 'Psychiatric'
             : doctor.specialty === 'Pediatrics'
               ? 'Pediatric'
-              : 'Medical',
+              : doctor.specialty === 'Neurosurgery'
+                ? 'Neurological'
+                : 'Medical',
       qualification: doctor.qualification,
       isAcceptingNewPatients: true,
       knowsLanguage: doctor.languages.map((lang) => ({ '@type': 'Language', name: lang })),
