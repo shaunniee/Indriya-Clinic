@@ -1,6 +1,6 @@
-# Indriya Clinic AWS Infrastructure
+# Indriya Polyclinic - Integrated Healthcare AWS Infrastructure
 
-AWS-first repository for hosting and delivering the Indriya Clinics public website.
+AWS-first repository for hosting and delivering the Indriya Polyclinic - Integrated Healthcare public website.
 
 Primary scope:
 

@@ -512,6 +512,16 @@ main {
   color: var(--orange);
 }
 
+.service-icon.pediatrics {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.service-icon.neurosurgery {
+  background: #e5edf7;
+  color: #22486f;
+}
+
 .service-card h3 {
   font-size: 1.2rem;
   font-weight: 700;
@@ -635,6 +645,14 @@ main {
   background: linear-gradient(135deg, var(--orange-light), #fde8cc);
 }
 
+.doctor-card.pediatrics-bg::after {
+  background: linear-gradient(135deg, var(--green-light), #dff1d9);
+}
+
+.doctor-card.neurosurgery-bg::after {
+  background: linear-gradient(135deg, #dbe8f5, #e8eef8);
+}
+
 .doctor-card:hover {
   border-color: transparent;
   box-shadow: var(--shadow-lg);
@@ -664,6 +682,14 @@ main {
 
 .doctor-avatar.psychiatry {
   background: linear-gradient(135deg, var(--orange), #c47008);
+}
+
+.doctor-avatar.pediatrics {
+  background: linear-gradient(135deg, var(--green), #2f7e2a);
+}
+
+.doctor-avatar.neurosurgery {
+  background: linear-gradient(135deg, #355f8a, #22486f);
 }
 
 .doctor-card h3 {
@@ -701,6 +727,16 @@ main {
 .doctor-specialty.psychiatry {
   background: var(--orange-light);
   color: var(--orange);
+}
+
+.doctor-specialty.pediatrics {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.doctor-specialty.neurosurgery {
+  background: #e5edf7;
+  color: #22486f;
 }
 
 .doctor-qualification {
@@ -1702,6 +1738,14 @@ main {
   background: linear-gradient(135deg, var(--orange), #c47008);
 }
 
+.services-doctor-avatar.pediatrics {
+  background: linear-gradient(135deg, var(--green), #2f7e2a);
+}
+
+.services-doctor-avatar.neurosurgery {
+  background: linear-gradient(135deg, #355f8a, #22486f);
+}
+
 .services-doctor-name {
   display: block;
   font-weight: 700;
@@ -1768,6 +1812,16 @@ main {
 .condition-check.psychiatry {
   background: var(--orange-light);
   color: var(--orange);
+}
+
+.condition-check.pediatrics {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.condition-check.neurosurgery {
+  background: #e5edf7;
+  color: #22486f;
 }
 
 .condition-name {
@@ -1882,6 +1936,14 @@ main {
   background: linear-gradient(90deg, var(--orange), var(--orange-dark));
 }
 
+.doctor-profile-band.pediatrics {
+  background: linear-gradient(90deg, var(--green), #2f7e2a);
+}
+
+.doctor-profile-band.neurosurgery {
+  background: linear-gradient(90deg, #355f8a, #22486f);
+}
+
 .doctor-profile-avatar-wrap {
   display: flex;
   justify-content: center;
@@ -1908,6 +1970,14 @@ main {
 
 .doctor-profile-avatar.psychiatry {
   background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+}
+
+.doctor-profile-avatar.pediatrics {
+  background: linear-gradient(135deg, var(--green), #2f7e2a);
+}
+
+.doctor-profile-avatar.neurosurgery {
+  background: linear-gradient(135deg, #355f8a, #22486f);
 }
 
 .doctor-profile-body {
@@ -1937,6 +2007,25 @@ main {
 .doctor-profile-badge.psychiatry {
   background: var(--orange-light);
   color: var(--orange);
+}
+
+.doctor-profile-badge.pediatrics {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.doctor-profile-badge.neurosurgery {
+  background: #e5edf7;
+  color: #22486f;
+}
+
+.doctor-profile-timing {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
 }
 
 .doctor-profile-name {
@@ -2000,6 +2089,16 @@ main {
 .doctor-profile-check.psychiatry {
   background: var(--orange-light);
   color: var(--orange);
+}
+
+.doctor-profile-check.pediatrics {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.doctor-profile-check.neurosurgery {
+  background: #e5edf7;
+  color: #22486f;
 }
 
 .doctor-profile-more {
@@ -2085,6 +2184,14 @@ main {
   background: linear-gradient(135deg, var(--orange-light) 0%, #fdf8f0 100%);
 }
 
+.doctor-detail-hero.pediatrics-hero {
+  background: linear-gradient(135deg, var(--green-light) 0%, #f4fbf2 100%);
+}
+
+.doctor-detail-hero.neurosurgery-hero {
+  background: linear-gradient(135deg, #e8eff8 0%, #f4f7fb 100%);
+}
+
 .doctor-detail-hero-inner {
   display: flex;
   gap: 2rem;
@@ -2112,6 +2219,14 @@ main {
 
 .doctor-detail-avatar.psychiatry {
   background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+}
+
+.doctor-detail-avatar.pediatrics {
+  background: linear-gradient(135deg, var(--green), #2f7e2a);
+}
+
+.doctor-detail-avatar.neurosurgery {
+  background: linear-gradient(135deg, #355f8a, #22486f);
 }
 
 .doctor-detail-hero-text h1 {
@@ -2188,6 +2303,16 @@ main {
 .doctor-detail-booking-card.psychiatry {
   background: var(--orange-light);
   border: 1px solid #f0d8aa;
+}
+
+.doctor-detail-booking-card.pediatrics {
+  background: var(--green-light);
+  border: 1px solid #d5e7cf;
+}
+
+.doctor-detail-booking-card.neurosurgery {
+  background: #e8eff8;
+  border: 1px solid #d2dfef;
 }
 
 .doctor-detail-booking-card p {

@@ -99,6 +99,8 @@ function BookingPage() {
                 <select id="service" name="service" value={formData.service} onChange={onChange}>
                   <option value="ENT">{t('serviceEntTitle')}</option>
                   <option value="Psychiatry">{t('servicePsychiatryTitle')}</option>
+                  <option value="Pediatrics">Pediatrics</option>
+                  <option value="Neurosurgery">Neurosurgery</option>
                 </select>
               </div>
               <div className="form-group">

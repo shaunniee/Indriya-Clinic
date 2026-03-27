@@ -10,12 +10,14 @@ function HomePage() {
   const { t } = useTranslation()
   const pageRef = useScrollReveal()
 
-  const encodedMapQuery = encodeURIComponent(clinicInfo.mapQuery)
-  const mapEmbedUrl = `https://www.google.com/maps?q=${encodedMapQuery}&ftid=${clinicInfo.mapFtid}&output=embed`
+  const mapCoordinates = `${clinicInfo.latitude},${clinicInfo.longitude}`
+  const mapEmbedUrl = `https://www.google.com/maps?q=${mapCoordinates}&z=17&output=embed`
   const mapOpenUrl = clinicInfo.mapUrl
 
   const entTagKeys = ['tagEar', 'tagNose', 'tagThroat', 'tagAllergy', 'tagSinus']
   const psychiatryTagKeys = ['tagAnxiety', 'tagDepression', 'tagSleep', 'tagStress', 'tagMood']
+  const pediatricsTagKeys = ['tagGrowth', 'tagNutrition', 'tagLactation', 'tagImmunization', 'tagNewborn']
+  const neurosurgeryTagKeys = ['tagBrain', 'tagSpine', 'tagTrauma', 'tagTumor', 'tagMicrosurgery']
 
   return (
     <div ref={pageRef}>
@@ -50,11 +52,11 @@ function HomePage() {
               </div>
               <div className="hero-stats">
                 <div className="hero-stat">
-                  <div className="hero-stat-number">2</div>
+                  <div className="hero-stat-number">4</div>
                   <div className="hero-stat-label">{t('heroStatSpecialities')}</div>
                 </div>
                 <div className="hero-stat">
-                  <div className="hero-stat-number">MD</div>
+                  <div className="hero-stat-number">4</div>
                   <div className="hero-stat-label">{t('heroStatDoctors')}</div>
                 </div>
                 <div className="hero-stat">
@@ -67,7 +69,7 @@ function HomePage() {
               <div className="hero-logo-circle">
                 <img
                   src="/logo.jpg"
-                  alt="Indriya Clinics"
+                  alt="Indriya Polyclinic - Integrated Healthcare"
                   width="240"
                   height="240"
                   fetchPriority="high"
@@ -113,6 +115,32 @@ function HomePage() {
                 ))}
               </div>
               <Link to="/services#psychiatry" className="service-detail-link">{t('viewAllServices')} &rarr;</Link>
+            </article>
+            <article className="service-card fade-up delay-3">
+              <div className="service-icon pediatrics">
+                <HeartIcon />
+              </div>
+              <h3>{t('servicePediatricsTitle')}</h3>
+              <p>{t('servicePediatricsBody')}</p>
+              <div className="service-tags">
+                {pediatricsTagKeys.map((key) => (
+                  <span key={key} className="service-tag">{t(key)}</span>
+                ))}
+              </div>
+              <Link to="/services#pediatrics" className="service-detail-link">{t('viewAllServices')} &rarr;</Link>
+            </article>
+            <article className="service-card fade-up delay-3">
+              <div className="service-icon neurosurgery">
+                <BrainIcon />
+              </div>
+              <h3>{t('serviceNeurosurgeryTitle')}</h3>
+              <p>{t('serviceNeurosurgeryBody')}</p>
+              <div className="service-tags">
+                {neurosurgeryTagKeys.map((key) => (
+                  <span key={key} className="service-tag">{t(key)}</span>
+                ))}
+              </div>
+              <Link to="/services#neurosurgery" className="service-detail-link">{t('viewAllServices')} &rarr;</Link>
             </article>
           </div>
         </div>
@@ -182,7 +210,7 @@ function HomePage() {
                   {doctor.specialty === 'ENT' ? <EarIcon size={14} /> : <BrainIcon size={14} />}
                   {doctor.specialtyFull}
                 </span>
-                <p className="doctor-bio">{t(doctor.bioKey)}</p>
+                  <p className="doctor-bio">{doctor.bio || t(doctor.bioKey)}</p>
                 <span className="doctor-card-cta">{t('viewProfile')} &rarr;</span>
               </Link>
             ))}
@@ -272,7 +300,7 @@ function HomePage() {
             </div>
             <div className="map-wrap">
               <iframe
-                title="Indriya Clinics Google Map"
+                title="Indriya Polyclinic - Integrated Healthcare Google Map"
                 src={mapEmbedUrl}
                 width="600"
                 height="400"

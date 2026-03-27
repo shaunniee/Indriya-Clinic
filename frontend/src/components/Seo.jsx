@@ -55,7 +55,7 @@ function upsertHreflang(lang, href) {
   element.setAttribute('href', href)
 }
 
-function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
+function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, doctorSeoTitle, doctorSeoDesc, blogPost }) {
   const { t, i18n } = useTranslation()
 
   useEffect(() => {
@@ -93,9 +93,9 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
       title = t('seoDoctorsTitle')
       description = t('seoDoctorsDescription')
       keywords = `${t('seoDoctorsKeywords')}, ${t('seoKeywords')}`
-    } else if (isDoctorDetail && doctorSeoTitleKey) {
-      title = t(doctorSeoTitleKey)
-      description = t(doctorSeoDescKey)
+    } else if (isDoctorDetail && (doctorSeoTitleKey || doctorSeoTitle)) {
+      title = doctorSeoTitle || t(doctorSeoTitleKey)
+      description = doctorSeoDesc || t(doctorSeoDescKey)
       keywords = `${t('seoDoctorsKeywords')}, ${t('seoKeywords')}`
     } else if (isPrivacy) {
       title = `${t('privacyTitle')} | ${clinicInfo.name}`
@@ -134,15 +134,15 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
     // Geo meta for local SEO
     upsertMeta('geo.region', 'IN-KA')
     upsertMeta('geo.placename', 'Surathkal, Mangalore')
-    upsertMeta('geo.position', '13.0067;74.7935')
-    upsertMeta('ICBM', '13.0067, 74.7935')
+    upsertMeta('geo.position', `${clinicInfo.latitude};${clinicInfo.longitude}`)
+    upsertMeta('ICBM', `${clinicInfo.latitude}, ${clinicInfo.longitude}`)
 
     // Open Graph
     const ogType = isBlogPost ? 'article' : 'website'
     const ogImage = (isBlogPost && blogPost?.coverImage) ? blogPost.coverImage : `${window.location.origin}/logo.jpg`
     const ogImageW = (isBlogPost && blogPost?.coverImage) ? '1200' : '512'
     const ogImageH = (isBlogPost && blogPost?.coverImage) ? '630' : '512'
-    const ogImageAlt = (isBlogPost && blogPost) ? blogPost.title : `${clinicInfo.name} logo — Mind & ENT Health Care, Mangalore`
+    const ogImageAlt = (isBlogPost && blogPost) ? blogPost.title : `${clinicInfo.name} logo — Integrated Multi-Specialty Healthcare, Mangalore`
 
     upsertMeta('og:title', title, 'property')
     upsertMeta('og:description', description, 'property')
@@ -206,7 +206,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
       '@type': 'MedicalClinic',
       '@id': `${window.location.origin}/#clinic`,
       name: clinicInfo.name,
-      alternateName: 'Indriya Clinics - Mind & ENT Health Care',
+      alternateName: 'Indriya Polyclinic - Integrated Healthcare - Multi-Specialty Healthcare',
       description: t('seoDescription'),
       url: window.location.origin,
       image: `${window.location.origin}/logo.jpg`,
@@ -223,17 +223,9 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
       },
       geo: {
         '@type': 'GeoCoordinates',
-        latitude: 13.0067,
-        longitude: 74.7935,
+        latitude: clinicInfo.latitude,
+        longitude: clinicInfo.longitude,
       },
-      openingHoursSpecification: [
-        {
-          '@type': 'OpeningHoursSpecification',
-          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-          opens: '17:00',
-          closes: '20:00',
-        },
-      ],
       virtualLocation: {
         '@type': 'VirtualLocation',
         name: 'Online Consultation via WhatsApp',
@@ -245,7 +237,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
         serviceUrl: `${window.location.origin}/book`,
         availableLanguage: ['English', 'Kannada', 'Hindi'],
       },
-      medicalSpecialty: ['Otolaryngologic', 'Psychiatric'],
+      medicalSpecialty: ['Otolaryngologic', 'Psychiatric', 'Pediatric', 'Neurological'],
       availableLanguage: [
         { '@type': 'Language', name: 'English', alternateName: 'en' },
         { '@type': 'Language', name: 'Kannada', alternateName: 'kn' },
@@ -286,6 +278,8 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
       availableService: [
         { '@type': 'MedicalTherapy', name: 'ENT (Ear, Nose, Throat) Specialist Care' },
         { '@type': 'MedicalTherapy', name: 'Psychiatry & Mental Health Care' },
+        { '@type': 'MedicalTherapy', name: 'Pediatrics & Child Health Care' },
+        { '@type': 'MedicalTherapy', name: 'Neurosurgery & Spine Care' },
         { '@type': 'MedicalTherapy', name: 'Anxiety & Depression Treatment' },
         { '@type': 'MedicalTherapy', name: 'Sleep Disorder Management' },
         { '@type': 'MedicalTherapy', name: 'Hearing Loss & Tinnitus Treatment' },
@@ -323,7 +317,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
       '@type': 'WebSite',
       '@id': `${window.location.origin}/#website`,
       name: clinicInfo.name,
-      alternateName: 'Indriya Clinics - Mind & ENT Health Care',
+      alternateName: 'Indriya Polyclinic - Integrated Healthcare - Multi-Specialty Healthcare',
       url: window.location.origin,
       publisher: {
         '@type': 'Organization',
@@ -369,7 +363,14 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
       name: doctor.name,
       description: doctor.specialtyFull,
       image: `${window.location.origin}/logo.jpg`,
-      medicalSpecialty: doctor.specialty === 'ENT' ? 'Otolaryngologic' : 'Psychiatric',
+      medicalSpecialty:
+        doctor.specialty === 'ENT'
+          ? 'Otolaryngologic'
+          : doctor.specialty === 'Psychiatry'
+            ? 'Psychiatric'
+            : doctor.specialty === 'Pediatrics'
+              ? 'Pediatric'
+              : 'Medical',
       qualification: doctor.qualification,
       isAcceptingNewPatients: true,
       knowsLanguage: doctor.languages.map((lang) => ({ '@type': 'Language', name: lang })),
@@ -404,23 +405,23 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
         mainEntity: [
           {
             '@type': 'Question',
-            name: 'What services does Indriya Clinics offer?',
+            name: 'What services does Indriya Polyclinic - Integrated Healthcare offer?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Indriya Clinics offers specialist ENT (Ear, Nose, Throat) services and Psychiatry services including treatment for anxiety, depression, sleep disorders, and stress management.',
+              text: 'Indriya Polyclinic - Integrated Healthcare offers specialist ENT, Psychiatry, Pediatrics, and Neurosurgery services including care for ear-nose-throat conditions, mental health, child health, and brain and spine disorders.',
             },
           },
           {
             '@type': 'Question',
-            name: 'Where is Indriya Clinics located?',
+            name: 'Where is Indriya Polyclinic - Integrated Healthcare located?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Indriya Clinics is located at 2nd floor, Kuduva Grandeur Commercial Complex, MRPL Road, Surathkal Junction, Mangalore-575014, Karnataka, India.',
+              text: 'Indriya Polyclinic - Integrated Healthcare is located at 2nd floor, Kuduva Grandeur Commercial Complex, MRPL Road, Surathkal Junction, Mangalore-575014, Karnataka, India.',
             },
           },
           {
             '@type': 'Question',
-            name: 'How do I book an appointment at Indriya Clinics?',
+            name: 'How do I book an appointment at Indriya Polyclinic - Integrated Healthcare?',
             acceptedAnswer: {
               '@type': 'Answer',
               text: 'You can book an appointment via WhatsApp through our website. Simply fill in your details and we will send a pre-filled message to the clinic for confirmation.',
@@ -431,47 +432,47 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
             name: 'What are the clinic timings?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Indriya Clinics is open Monday to Saturday, 5:00 PM to 8:00 PM. The clinic is closed on Sundays. Online consultation is also available via WhatsApp.',
+              text: 'Timings vary by doctor. Please check each doctor profile for updated schedule details or contact us via WhatsApp.',
             },
           },
           {
             '@type': 'Question',
-            name: 'Which doctors are available at Indriya Clinics?',
+            name: 'Which doctors are available at Indriya Polyclinic - Integrated Healthcare?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: "Dr Jaswin D'Souza (MBBS, MS ENT, ENT Specialist & Head and Neck Surgeon) and Dr Vinitha D'Souza (MBBS, MD Psychiatry, Consultant Psychiatrist & Sexologist) are available at Indriya Clinics.",
+              text: "Dr Jaswin D'Souza (MBBS, MS ENT, ENT Specialist & Head and Neck Surgeon), Dr Vinitha D'Souza (MBBS, MD Psychiatry, Consultant Psychiatrist & Sexologist), Dr. Sukanya V (MBBS, MD Pediatrics, PGPN, CLS, Consultant Pediatrician and Neonatologist), and Dr. Sagar Ballal (MBBS, MS, MCh Neurosurgery, Consultant Neurosurgeon) are available at Indriya Polyclinic - Integrated Healthcare.",
             },
           },
           {
             '@type': 'Question',
-            name: 'What is the cost of ENT consultation in Mangalore at Indriya Clinics?',
+            name: 'What is the cost of ENT consultation in Mangalore at Indriya Polyclinic - Integrated Healthcare?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Indriya Clinics offers affordable ENT consultations in Mangalore. Payments are accepted in Cash and UPI. Contact us via WhatsApp for current consultation fees.',
+              text: 'Indriya Polyclinic - Integrated Healthcare offers affordable ENT consultations in Mangalore. Payments are accepted in Cash and UPI. Contact us via WhatsApp for current consultation fees.',
             },
           },
           {
             '@type': 'Question',
-            name: 'Does Indriya Clinics treat anxiety and depression?',
+            name: 'Does Indriya Polyclinic - Integrated Healthcare treat anxiety and depression?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: "Yes. Dr Vinitha D'Souza (MBBS, MD Psychiatry, Consultant Psychiatrist & Sexologist) at Indriya Clinics provides treatment for anxiety, depression, OCD, addiction, sexual health concerns, women's mental health, and other psychiatric conditions.",
+              text: "Yes. Dr Vinitha D'Souza (MBBS, MD Psychiatry, Consultant Psychiatrist & Sexologist) at Indriya Polyclinic - Integrated Healthcare provides treatment for anxiety, depression, OCD, addiction, sexual health concerns, women's mental health, and other psychiatric conditions.",
             },
           },
           {
             '@type': 'Question',
-            name: 'Do I need a referral to see the psychiatrist at Indriya Clinics?',
+            name: 'Do I need a referral to see the psychiatrist at Indriya Polyclinic - Integrated Healthcare?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'No referral is needed. You can directly book a psychiatry appointment at Indriya Clinics via WhatsApp through our website.',
+              text: 'No referral is needed. You can directly book a psychiatry appointment at Indriya Polyclinic - Integrated Healthcare via WhatsApp through our website.',
             },
           },
           {
             '@type': 'Question',
-            name: 'Is Indriya Clinics open on weekends?',
+            name: 'Is Indriya Polyclinic - Integrated Healthcare open on weekends?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Indriya Clinics is open Monday to Saturday, 5:00 PM to 8:00 PM. The clinic is closed on Sundays. Online consultation is also available via WhatsApp.',
+              text: 'Yes, selected doctors are available on weekends. Please check doctor-specific timings on their profile pages or contact us via WhatsApp for confirmation.',
             },
           },
           {
@@ -479,7 +480,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
             name: 'Do you offer online consultations?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Yes, Indriya Clinics offers online consultations via WhatsApp for follow-ups and initial assessments. Contact us through the booking form to arrange a virtual appointment.',
+              text: 'Yes, Indriya Polyclinic - Integrated Healthcare offers online consultations via WhatsApp for follow-ups and initial assessments. Contact us through the booking form to arrange a virtual appointment.',
             },
           },
           {
@@ -503,7 +504,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
             name: 'Is the consultation confidential?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Absolutely. All consultations at Indriya Clinics — whether in-person or online — are completely confidential. We maintain strict patient privacy in accordance with medical ethics and Indian data protection laws.',
+              text: 'Absolutely. All consultations at Indriya Polyclinic - Integrated Healthcare — whether in-person or online — are completely confidential. We maintain strict patient privacy in accordance with medical ethics and Indian data protection laws.',
             },
           },
           {
@@ -554,6 +555,8 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
         about: [
           { '@type': 'MedicalSpecialty', name: 'Otolaryngologic' },
           { '@type': 'MedicalSpecialty', name: 'Psychiatric' },
+          { '@type': 'MedicalSpecialty', name: 'Pediatric' },
+          { '@type': 'MedicalSpecialty', name: 'Neurological' },
         ],
         mainContentOfPage: {
           '@type': 'WebPageElement',
@@ -640,7 +643,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
         // Content location — signals local relevance
         contentLocation: {
           '@type': 'Place',
-          name: 'Indriya Clinics, Surathkal, Mangalore',
+          name: 'Indriya Polyclinic - Integrated Healthcare, Surathkal, Mangalore',
           address: {
             '@type': 'PostalAddress',
             addressLocality: 'Mangalore',
@@ -651,7 +654,7 @@ function Seo({ page = 'home', doctorSeoTitleKey, doctorSeoDescKey, blogPost }) {
       }
       upsertJsonLd('blog-article-json-ld', articleSchema)
     }
-  }, [i18n.language, t, page, doctorSeoTitleKey, doctorSeoDescKey, blogPost])
+  }, [i18n.language, t, page, doctorSeoTitleKey, doctorSeoDescKey, doctorSeoTitle, doctorSeoDesc, blogPost])
 
   return null
 }

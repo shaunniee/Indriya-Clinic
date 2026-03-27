@@ -1,9 +1,11 @@
 export const clinicInfo = {
-  name: 'Indriya Clinics',
+  name: 'Indriya Polyclinic - Integrated Healthcare',
   postalCode: '575014',
-  mapQuery: 'Indriya Clinic, Kuduva Grandeur Commercial Complex, MRPL Road, Surathkal, Mangaluru, Karnataka 575014, India',
+  mapQuery: 'Indriya Polyclinic - Integrated Healthcare, Kuduva Grandeur Commercial Complex, MRPL Road, Surathkal, Mangaluru, Karnataka 575014, India',
   mapFtid: '0x3ba3511f87eee317:0x12f2aea163bff201',
-  mapUrl: 'https://maps.app.goo.gl/QcbgEZvKpN3YABmy5',
+  mapUrl: 'https://maps.app.goo.gl/utRrmqkv68YVFCnn6',
+  latitude: 12.9892567,
+  longitude: 74.8021314,
   whatsappNumber: '+919449244651',
 }
 
@@ -17,6 +19,8 @@ export const doctors = [
     taglineBioKey: 'doctorTaglineJaswin',
     bioKey: 'doctorBioJaswin',
     bioLongKey: 'doctorBioLongJaswin',
+    department: 'ENT',
+    timings: 'Mon to Sat 2:00 PM - 8:00 PM | Sun 10:00 AM - 1:00 PM',
     languages: ['English', 'Kannada', 'Konkani', 'Hindi'],
     conditions: [
       'Comprehensive ENT Consultation & Endoscopic Examination',
@@ -48,6 +52,8 @@ export const doctors = [
     taglineBioKey: 'doctorTaglinePsych',
     bioKey: 'doctorBioPsych',
     bioLongKey: 'doctorBioLongPsych',
+    department: 'Psychiatry',
+    timings: 'Sat 6:00 PM - 8:30 PM | Sun 10:00 AM - 1:00 PM',
     languages: ['English', 'Kannada', 'Konkani', 'Hindi'],
     conditions: [
       // General Psychiatric Conditions
@@ -72,6 +78,72 @@ export const doctors = [
       'Autism & Intellectual Developmental Delay',
       'Migraine, Dementia & Delirium',
     ],
+  },
+  {
+    slug: 'dr-sukanya-v',
+    name: 'Dr. Sukanya V',
+    qualification: 'MBBS, MD (Pediatrics), PGPN (Boston University), CLS',
+    specialty: 'Pediatrics',
+    specialtyFull: 'Consultant Pediatrician and Neonatologist',
+    tagline:
+      'Specialist in Pediatric Nutrition & Lactation Support',
+    bio:
+      'Dr. Sukanya is an accomplished Pediatrician with over 7 years of clinical and academic excellence, offering evidence-based, compassionate care for children from newborns to teens.',
+    bioLong:
+      'Dr. Sukanya is an accomplished Pediatrician with over 7 years of clinical and academic excellence. Currently serving as a Consultant at Indriya Polyclinic - Integrated Healthcare, Surathkal, she is deeply committed to providing the highest standard of medical care to the children of Surathkal and Mangalore.\n\nHer professional expertise is built upon a foundation of experience at premier medical institutions across India, including SDM College of Medical Sciences, Dharwad, and SUT Hospital, Trivandrum. A graduate of BIMS Belgaum (MBBS) and MGMMC Indore (MD Pediatrics), Dr. Sukanya has further specialized with a Post Graduate Program in Pediatric Nutrition from Boston University.\n\nAs a Certified Lactation Support (CLS) provider and a dedicated advocate for responsive parenting, she offers a unique blend of clinical precision and empathetic guidance for families.',
+    department: 'Pediatrics',
+    timings: 'Mon to Fri 6:00 PM - 8:00 PM',
+    languages: ['English', 'Kannada', 'Telugu', 'Malayalam', 'Hindi', 'Marathi'],
+    conditions: [
+      'Lactation & Breastfeeding Support',
+      'Newborn Screenings, Jaundice Management & Umbilical Care',
+      'Postnatal Visits & Well Baby Clinic',
+      'Weaning & Solid Food Introduction Guidance',
+      'Management of Picky Eating, Underweight & Childhood Obesity',
+      'Vitamin Deficiency & Metabolic Health Management',
+      'Milestone Monitoring: Motor, Speech & Cognitive Development',
+      'Parenting Guidance: Tantrums, Sleep Training & Potty Training',
+      'Teenage Health: Growth, Puberty & Behavioral Wellness',
+      'Immunization & Vaccination Counseling',
+      'Acute & Chronic Illness Management (Asthma, Allergies, Infections)',
+      'Emergency Outpatient Pediatric Care',
+    ],
+    seoTitle:
+      'Dr. Sukanya V | Consultant Pediatrician and Neonatologist - Indriya Polyclinic - Integrated Healthcare Mangalore',
+    seoDescription:
+      'Dr. Sukanya V (MBBS, MD Pediatrics, PGPN, CLS) is a Consultant Pediatrician and Neonatologist at Indriya Polyclinic - Integrated Healthcare, Surathkal, Mangalore. Expertise in pediatric nutrition, lactation support, newborn care, immunization, growth and development.',
+  },
+  {
+    slug: 'dr-sagar-ballal',
+    name: 'Dr. Sagar Ballal',
+    qualification: 'MBBS, MS (Gen. Surgery), MCh (Neurosurgery - SCTIMST)',
+    specialty: 'Neurosurgery',
+    specialtyFull: 'Consultant Neurosurgeon',
+    tagline:
+      'Consultant Neurosurgeon with advanced expertise in brain and spine surgery',
+    bio:
+      'Dr. Sagar is a distinguished Neurosurgeon dedicated to world-class surgical care for complex disorders of the brain and spine, combining precision, advanced technology, and a patient-centric approach.',
+    bioLong:
+      'Dr. Sagar is a distinguished Neurosurgeon dedicated to providing world-class surgical care for complex disorders of the brain and spine. A native of the region, he began his medical journey at KMC Mangalore, followed by a Master of Surgery from MGM Medical College and MY Hospital, Indore.\n\nHe earned his MCh in Neurosurgery from the prestigious Sree Chitra Tirunal Institute for Medical Sciences and Technology (SCTIMST), an Institute of National Importance (INI). This rigorous training at one of India\'s premier neurological centers has equipped him with the precision and advanced technical skills required for intricate neurosurgical interventions. With vast clinical experience, he combines cutting-edge technology with a patient-centric approach to ensure the best possible functional outcomes.\n\nDr. Sagar believes that effective healing starts with clear communication. He is fluent in Tulu, Kannada, Hindi, English, and Malayalam, enabling him to provide personalized and compassionate care to the diverse patient community in and around Mangalore.',
+    department: 'Neurosurgery',
+    timings: 'Mon to Fri 6:00 PM - 8:00 PM',
+    languages: ['Tulu', 'Kannada', 'Hindi', 'English', 'Malayalam'],
+    conditions: [
+      'Neuro-Oncology: Surgical management of Gliomas, Meningiomas, and Pituitary tumors',
+      'Vascular Neurosurgery: Aneurysms, AVMs, and Stroke surgery',
+      'Neuro-Trauma: Emergency management of traumatic brain injuries and intracranial bleeds',
+      'Skull Base Surgery for deep-seated tumors',
+      'Degenerative Spine Surgery: Microdiscectomy and decompression for slip disc and sciatica',
+      'Spinal Reconstruction for fractures, tumors, scoliosis, and kyphosis',
+      'Minimally Invasive Spine Surgery (MISS)',
+      'Pediatric Neurosurgery: Hydrocephalus (Shunt surgery) and Spina Bifida',
+      'Peripheral Nerve Surgery: Nerve injuries and entrapment syndromes',
+      'Neuro-Endoscopy for minimally invasive brain and pituitary surgeries',
+    ],
+    seoTitle:
+      'Dr. Sagar Ballal | Consultant Neurosurgeon - Indriya Polyclinic - Integrated Healthcare Mangalore',
+    seoDescription:
+      'Dr. Sagar Ballal (MBBS, MS, MCh Neurosurgery - SCTIMST) is a Consultant Neurosurgeon at Indriya Polyclinic - Integrated Healthcare, Surathkal, Mangalore. Expertise in brain tumor surgery, vascular neurosurgery, neuro-trauma, spine surgery, pediatric neurosurgery, and neuro-endoscopy.',
   },
 ]
 
@@ -225,6 +297,82 @@ export const services = [
       {
         name: 'Migraine, Dementia & Delirium',
         desc: 'Psychiatric evaluation and management of migraine-related mood symptoms, dementia, and delirium.',
+      },
+    ],
+  },
+  {
+    key: 'pediatrics',
+    title: 'Pediatrics Services',
+    conditions: [
+      {
+        name: 'Lactation & Breastfeeding Support',
+        desc: 'Expert counseling for latching issues, milk supply concerns, and maternal-infant feeding support.',
+      },
+      {
+        name: 'Newborn Screening & Early Infant Care',
+        desc: 'Comprehensive newborn checks including jaundice monitoring, umbilical care, and early growth assessment.',
+      },
+      {
+        name: 'Well Baby Clinic & Postnatal Follow-up',
+        desc: 'Regular preventive pediatric checkups focused on growth, development, and parent guidance.',
+      },
+      {
+        name: 'Pediatric Nutrition & Weaning Guidance',
+        desc: 'Structured nutrition planning for weaning, picky eating, undernutrition, and healthy weight management.',
+      },
+      {
+        name: 'Developmental Milestone Monitoring',
+        desc: 'Tracking speech, motor, social, and cognitive milestones with early intervention guidance where needed.',
+      },
+      {
+        name: 'Behavioral & Teenage Health Support',
+        desc: 'Evidence-based support for tantrums, sleep concerns, toilet training, puberty, and adolescent wellbeing.',
+      },
+      {
+        name: 'Immunization & Preventive Pediatric Care',
+        desc: 'Vaccination counseling and complete immunization scheduling with preventive health focus.',
+      },
+      {
+        name: 'Acute & Chronic Childhood Illness Management',
+        desc: 'Care for respiratory infections, allergies, asthma, seasonal illnesses, and recurring pediatric conditions.',
+      },
+    ],
+  },
+  {
+    key: 'neurosurgery',
+    title: 'Neurosurgery Services',
+    conditions: [
+      {
+        name: 'Brain Tumor Surgery (Neuro-Oncology)',
+        desc: 'Surgical management of primary and metastatic brain tumors including gliomas, meningiomas, and pituitary tumors.',
+      },
+      {
+        name: 'Vascular Neurosurgery',
+        desc: 'Expert treatment for aneurysms, AVMs, and selected stroke-related neurosurgical conditions.',
+      },
+      {
+        name: 'Neuro-Trauma & Emergency Brain Care',
+        desc: 'Emergency management of traumatic brain injuries and intracranial hemorrhage with timely intervention.',
+      },
+      {
+        name: 'Skull Base Surgery',
+        desc: 'Advanced microsurgical treatment for deep-seated cranial lesions and skull-base pathologies.',
+      },
+      {
+        name: 'Degenerative Spine Surgery',
+        desc: 'Microdiscectomy and decompression for slip disc, sciatica, and spinal stenosis symptoms.',
+      },
+      {
+        name: 'Spinal Reconstruction & Complex Spine Care',
+        desc: 'Treatment of spinal fractures, tumors, and deformities including scoliosis and kyphosis.',
+      },
+      {
+        name: 'Minimally Invasive Spine Surgery (MISS)',
+        desc: 'Keyhole spine procedures aimed at reduced tissue injury, less scarring, and faster recovery.',
+      },
+      {
+        name: 'Pediatric Neurosurgery & Neuro-Endoscopy',
+        desc: 'Specialized care for hydrocephalus, spina bifida, and minimally invasive endoscopic brain procedures.',
       },
     ],
   },

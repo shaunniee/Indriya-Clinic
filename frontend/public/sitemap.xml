@@ -45,6 +45,20 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.indriyaclinic.com/doctors/dr-vinitha-dsouza" />
   </url>
   <url>
+    <loc>https://www.indriyaclinic.com/doctors/dr-sukanya-v</loc>
+    <lastmod>2026-03-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.indriyaclinic.com/doctors/dr-sukanya-v" />
+  </url>
+  <url>
+    <loc>https://www.indriyaclinic.com/doctors/dr-sagar-ballal</loc>
+    <lastmod>2026-03-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.indriyaclinic.com/doctors/dr-sagar-ballal" />
+  </url>
+  <url>
     <loc>https://www.indriyaclinic.com/privacy</loc>
     <lastmod>2026-03-11</lastmod>
     <changefreq>yearly</changefreq>
@@ -54,20 +68,9 @@
 
   <url>
     <loc>https://www.indriyaclinic.com/blog</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.indriyaclinic.com/blog" />
-  </url>
-  <url>
-    <loc>https://www.indriyaclinic.com/blog/understanding-sinusitis-causes-symptoms-treatment</loc>
-    <lastmod>2026-03-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.indriyaclinic.com/blog/understanding-sinusitis-causes-symptoms-treatment" />
-    <image:image>
-      <image:loc>https://cdn.sanity.io/images/6za6g18l/production/0218958f0c7f8ec6f79e6aec386b95979176b819-1408x768.png</image:loc>
-      <image:title>Understanding Sinusitis: Causes, Symptoms &amp; Treatment</image:title>
-    </image:image>
   </url>
 </urlset>

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { doctors } from '../clinicData'
 import Seo from '../components/Seo'
-import { EarIcon, BrainIcon, ArrowRightIcon, CheckIcon, GlobeIcon, WhatsAppIcon } from '../components/Icons'
+import { EarIcon, BrainIcon, ArrowRightIcon, CheckIcon, GlobeIcon, WhatsAppIcon, ClockIcon } from '../components/Icons'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { getInitials } from '../utils/helpers'
 
@@ -40,6 +40,8 @@ function DoctorsPage() {
           <div className="doctors-listing-grid">
             {doctors.map((doctor, index) => {
               const isEnt = doctor.specialty === 'ENT'
+              const tagline = doctor.tagline || t(doctor.taglineBioKey)
+              const bio = doctor.bio || t(doctor.bioKey)
               return (
                 <article
                   key={doctor.slug}
@@ -62,8 +64,17 @@ function DoctorsPage() {
                       {doctor.specialty}
                     </div>
                     <h2 className="doctor-profile-name">{doctor.name}</h2>
-                    <p className="doctor-profile-tagline">{t(doctor.taglineBioKey)}</p>
-                    <p className="doctor-profile-bio">{t(doctor.bioKey)}</p>
+                    <p className="doctor-profile-tagline">{tagline}</p>
+                    <p className="doctor-profile-bio">{bio}</p>
+
+                    {(doctor.department || doctor.timings) && (
+                      <div className="doctor-profile-timing">
+                        <ClockIcon size={13} />
+                        <span>
+                          {[doctor.department, doctor.timings].filter(Boolean).join(' | ')}
+                        </span>
+                      </div>
+                    )}
 
                     {/* Languages */}
                     <div className="doctor-profile-languages">

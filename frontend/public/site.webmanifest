@@ -1,7 +1,7 @@
 {
-  "name": "Indriya Clinics — Mind & ENT Health Care",
-  "short_name": "Indriya Clinics",
-  "description": "Specialist ENT and Psychiatry clinic in Surathkal, Mangalore. Book appointments via WhatsApp.",
+  "name": "Indriya Polyclinic - Integrated Healthcare — Multi-Specialty Healthcare",
+  "short_name": "Indriya Polyclinic - Integrated Healthcare",
+  "description": "Integrated multi-specialty clinic in Surathkal, Mangalore offering ENT, Psychiatry, Pediatrics, and Neurosurgery care. Book appointments via WhatsApp.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F5F9FC",

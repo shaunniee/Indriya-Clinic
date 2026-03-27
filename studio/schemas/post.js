@@ -66,12 +66,12 @@ export default defineType({
       name: 'author',
       title: 'Author',
       type: 'string',
-      initialValue: 'Indriya Clinics',
+      initialValue: 'Indriya Polyclinic - Integrated Healthcare',
       options: {
         list: [
           { title: "Dr. Jaswin D'Souza", value: "Dr. Jaswin D'Souza" },
           { title: "Dr. Vinitha D'Souza", value: "Dr. Vinitha D'Souza" },
-          { title: 'Indriya Clinics', value: 'Indriya Clinics' },
+          { title: 'Indriya Polyclinic - Integrated Healthcare', value: 'Indriya Polyclinic - Integrated Healthcare' },
         ],
       },
     }),

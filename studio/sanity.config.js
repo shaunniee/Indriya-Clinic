@@ -9,7 +9,7 @@ const PREVIEW_URL = 'https://www.indriyaclinic.com'
 
 export default defineConfig({
   name: 'indriya-clinics',
-  title: 'Indriya Clinics Blog',
+  title: 'Indriya Polyclinic - Integrated Healthcare Blog',
 
   projectId: process.env.SANITY_STUDIO_PROJECT_ID || '6za6g18l',
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',

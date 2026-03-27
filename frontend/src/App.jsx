@@ -163,10 +163,10 @@ function AppShell() {
     <div className="app">
       <header className="site-header">
         <div className="container header-inner">
-          <Link to="/" className="brand" aria-label="Indriya Clinics home">
+          <Link to="/" className="brand" aria-label="Indriya Polyclinic - Integrated Healthcare home">
             <img
               src="/logo.jpg"
-              alt="Indriya Clinics logo"
+              alt="Indriya Polyclinic - Integrated Healthcare logo"
               width="44"
               height="44"
               onError={(event) => {
@@ -175,7 +175,7 @@ function AppShell() {
             />
             <div>
               <p className="brand-title">
-                Indriya <span className="brand-highlight">Clinics</span>
+                Indriya <span className="brand-highlight">Polyclinic</span>
               </p>
               <p className="brand-subtitle">{t('siteTagline')}</p>
             </div>
@@ -237,13 +237,13 @@ function AppShell() {
               <div className="footer-brand">
                 <img
                   src="/logo.jpg"
-                  alt="Indriya Clinics logo"
+                  alt="Indriya Polyclinic - Integrated Healthcare logo"
                   width="40"
                   height="40"
                   loading="lazy"
                   onError={(event) => { event.currentTarget.style.display = 'none' }}
                 />
-                <span className="footer-brand-name">Indriya Clinics</span>
+                <span className="footer-brand-name">Indriya Polyclinic - Integrated Healthcare</span>
               </div>
               <p className="footer-desc">{t('heroText')}</p>
             </div>
@@ -252,6 +252,8 @@ function AppShell() {
               <ul>
                 <li><Link to="/services#ent">{t('serviceEntTitle')}</Link></li>
                 <li><Link to="/services#psychiatry">{t('servicePsychiatryTitle')}</Link></li>
+                <li><Link to="/services#pediatrics">{t('servicePediatricsTitle')}</Link></li>
+                <li><Link to="/services#neurosurgery">{t('serviceNeurosurgeryTitle')}</Link></li>
               </ul>
             </div>
             <div className="footer-section">

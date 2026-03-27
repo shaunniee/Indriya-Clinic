@@ -136,7 +136,7 @@ function BlogPostPage() {
                   <h4>
                     <Link to="/">{clinicInfo.name}</Link>
                   </h4>
-                  <span className="blog-author-specialty">Mind & ENT Health Care</span>
+                  <span className="blog-author-specialty">Integrated Multi-Specialty Healthcare</span>
                   <span className="blog-author-location">Kudva Grandeur, NH 66, Surathkal, Mangalore-575014</span>
                 </div>
               </div>

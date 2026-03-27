@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { doctors, clinicInfo } from '../clinicData'
 import Seo from '../components/Seo'
-import { EarIcon, BrainIcon, CheckIcon, WhatsAppIcon, GlobeIcon, BuildingIcon } from '../components/Icons'
+import { EarIcon, BrainIcon, CheckIcon, WhatsAppIcon, GlobeIcon, BuildingIcon, ClockIcon } from '../components/Icons'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { getInitials } from '../utils/helpers'
 
@@ -24,13 +24,22 @@ function DoctorDetailPage() {
   }
 
   const isEnt = doctor.specialty === 'ENT'
-  const seoTitleKey = isEnt ? 'seoJaswinTitle' : 'seoPsychTitle'
-  const seoDescKey = isEnt ? 'seoJaswinDescription' : 'seoPsychDescription'
+  const isPsych = doctor.specialty === 'Psychiatry'
+  const seoTitleKey = isEnt ? 'seoJaswinTitle' : (isPsych ? 'seoPsychTitle' : undefined)
+  const seoDescKey = isEnt ? 'seoJaswinDescription' : (isPsych ? 'seoPsychDescription' : undefined)
+  const doctorTagline = doctor.tagline || t(doctor.taglineBioKey)
+  const doctorLongBio = doctor.bioLong || t(doctor.bioLongKey)
   const firstName = doctor.name.replace(/^Dr\.?\s*/i, '').split(' ')[0]
 
   return (
     <div ref={pageRef}>
-      <Seo page={`doctor-${doctor.slug}`} doctorSeoTitleKey={seoTitleKey} doctorSeoDescKey={seoDescKey} />
+      <Seo
+        page={`doctor-${doctor.slug}`}
+        doctorSeoTitleKey={seoTitleKey}
+        doctorSeoDescKey={seoDescKey}
+        doctorSeoTitle={doctor.seoTitle}
+        doctorSeoDesc={doctor.seoDescription}
+      />
 
       {/* Breadcrumb */}
       <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -59,7 +68,7 @@ function DoctorDetailPage() {
                 {doctor.specialty}
               </div>
               <h1>{doctor.name}</h1>
-              <p className="doctor-detail-tagline">{t(doctor.taglineBioKey)}</p>
+              <p className="doctor-detail-tagline">{doctorTagline}</p>
 
               {/* Meta chips */}
               <div className="doctor-detail-meta">
@@ -71,6 +80,12 @@ function DoctorDetailPage() {
                   <GlobeIcon />
                   {t('doctorLanguagesLabel')}: {doctor.languages.join(', ')}
                 </span>
+                {(doctor.department || doctor.timings) && (
+                  <span className="doctor-detail-meta-item">
+                    <ClockIcon />
+                    {[doctor.department, doctor.timings].filter(Boolean).join(' | ')}
+                  </span>
+                )}
               </div>
 
               <Link to="/book" className="btn-primary btn-whatsapp" style={{ marginTop: '1.25rem', display: 'inline-flex' }}>
@@ -91,7 +106,7 @@ function DoctorDetailPage() {
             <div className="doctor-detail-bio-section">
               <h2>About {firstName}</h2>
               <div className="doctor-detail-long-bio">
-                {t(doctor.bioLongKey).split('\n\n').map((paragraph, i) => (
+                {doctorLongBio.split('\n\n').map((paragraph, i) => (
                   <p key={i}>{paragraph}</p>
                 ))}
               </div>

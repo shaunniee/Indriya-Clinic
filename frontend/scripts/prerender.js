@@ -10,6 +10,7 @@ import { createServer } from 'http'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { doctors } from '../src/clinicData.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const distDir = path.join(__dirname, '../dist')
@@ -20,12 +21,14 @@ const STATIC_ROUTES = [
   '/',
   '/services',
   '/doctors',
-  '/doctors/dr-jaswin-dsouza',
-  '/doctors/dr-vinitha-dsouza',
   '/book',
   '/blog',
   '/privacy',
 ]
+
+function getDoctorRoutes() {
+  return doctors.map((doctor) => `/doctors/${doctor.slug}`)
+}
 
 // Read blog slugs from posts.json built earlier
 function getBlogRoutes() {
@@ -81,7 +84,8 @@ async function prerender() {
   })
 
   const blogRoutes = getBlogRoutes()
-  const allRoutes = [...STATIC_ROUTES, ...blogRoutes]
+  const doctorRoutes = getDoctorRoutes()
+  const allRoutes = [...STATIC_ROUTES, ...doctorRoutes, ...blogRoutes]
   console.log(`Pre-rendering ${allRoutes.length} routes...`)
 
   for (const route of allRoutes) {
