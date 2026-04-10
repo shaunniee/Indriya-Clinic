@@ -6,8 +6,14 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const projectId = process.env.SANITY_PROJECT_ID || '6za6g18l'
-const dataset = process.env.SANITY_DATASET || 'production'
+const projectId =
+  process.env.SANITY_PROJECT_ID ||
+  process.env.SANITY_STUDIO_PROJECT_ID ||
+  '6za6g18l'
+const dataset =
+  process.env.SANITY_DATASET ||
+  process.env.SANITY_STUDIO_DATASET ||
+  'production'
 const token = process.env.SANITY_AUTH_TOKEN || undefined
 
 const client = createClient({
@@ -21,7 +27,7 @@ const client = createClient({
 console.log(`Fetching blog posts from Sanity (project: ${projectId}, dataset: ${dataset})...`)
 
 const posts = await client.fetch(`
-  *[_type == "post" && defined(publishedAt)] | order(publishedAt desc) {
+  *[_type == "post" && defined(publishedAt) && defined(slug.current)] | order(publishedAt desc) {
     title,
     "slug": slug.current,
     excerpt,
