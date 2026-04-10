@@ -20,14 +20,14 @@ const client = createClient({
   projectId,
   dataset,
   apiVersion: '2026-03-11',
-  useCdn: !token,
+  useCdn: false,
   ...(token ? { token } : {}),
 })
 
 console.log(`Fetching blog posts from Sanity (project: ${projectId}, dataset: ${dataset})...`)
 
 const posts = await client.fetch(`
-  *[_type == "post" && defined(publishedAt) && defined(slug.current)] | order(publishedAt desc) {
+  *[_type == "post" && defined(slug.current)] | order(publishedAt desc, _updatedAt desc) {
     title,
     "slug": slug.current,
     excerpt,
@@ -40,9 +40,11 @@ const posts = await client.fetch(`
     publishedAt,
     "updatedAt": _updatedAt,
     "coverImage": coverImage.asset->url,
-    "status": select(defined(publishedAt) => "published", "draft")
+    "status": "published"
   }
 `)
+
+console.log(`Fetched ${posts.length} posts from Sanity`)
 
 // Calculate reading time from Portable Text blocks
 function calcReadingTime(body) {
@@ -58,6 +60,7 @@ function calcReadingTime(body) {
 // Convert Portable Text body to HTML for each post
 const postsWithHtml = posts.map((post) => ({
   ...post,
+  publishedAt: post.publishedAt || post.updatedAt,
   bodyHtml: post.body ? toHTML(post.body) : '',
   wordCount: post.body ? post.body.filter((b) => b._type === 'block').map((b) => b.children?.map((c) => c.text).join(' ') || '').join(' ').trim().split(/\s+/).length : 0,
   readingTime: calcReadingTime(post.body),
