@@ -73,4 +73,15 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.indriyaclinic.com/blog" />
   </url>
+  <url>
+    <loc>https://www.indriyaclinic.com/blog/migraine-patients-guide</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.indriyaclinic.com/blog/migraine-patients-guide" />
+    <image:image>
+      <image:loc>https://cdn.sanity.io/images/6za6g18l/production/086317e0624c89be4745c7425f1cc1a3231fa16d-2048x1367.png</image:loc>
+      <image:title>Understanding Migraine: A Guide to Managing It Better</image:title>
+    </image:image>
+  </url>
 </urlset>

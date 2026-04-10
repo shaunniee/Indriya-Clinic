@@ -31,7 +31,7 @@ const posts = await client.fetch(`
     title,
     "slug": slug.current,
     excerpt,
-    body,
+    body[]{..., _type == "image" => { _type, _key, alt, caption, "assetUrl": asset->url }},
     author,
     category,
     tags,
@@ -45,6 +45,27 @@ const posts = await client.fetch(`
 `)
 
 console.log(`Fetched ${posts.length} posts from Sanity`)
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+const portableTextComponents = {
+  types: {
+    image: ({ value }) => {
+      const src = value.assetUrl || value.asset?.url || ''
+      if (!src) return ''
+      const alt = escapeHtml(value.alt)
+      const caption = value.caption ? `<figcaption>${escapeHtml(value.caption)}</figcaption>` : ''
+      return `<figure><img src="${src}" alt="${alt}" />${caption}</figure>`
+    },
+  },
+}
 
 // Calculate reading time from Portable Text blocks
 function calcReadingTime(body) {
@@ -61,7 +82,7 @@ function calcReadingTime(body) {
 const postsWithHtml = posts.map((post) => ({
   ...post,
   publishedAt: post.publishedAt || post.updatedAt,
-  bodyHtml: post.body ? toHTML(post.body) : '',
+  bodyHtml: post.body ? toHTML(post.body, { components: portableTextComponents }) : '',
   wordCount: post.body ? post.body.filter((b) => b._type === 'block').map((b) => b.children?.map((c) => c.text).join(' ') || '').join(' ').trim().split(/\s+/).length : 0,
   readingTime: calcReadingTime(post.body),
   body: undefined, // Remove raw Portable Text from JSON to save bundle size
