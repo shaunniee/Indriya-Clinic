@@ -32,7 +32,9 @@ function ServiceSection({ service, icon, titleKey, bodyKey, index }) {
             {doc ? (
               <Link to={`/doctors/${doc.slug}`} className="services-doctor-chip services-doctor-chip-link">
                 <div className={`services-doctor-avatar ${doc.specialty.toLowerCase()}`}>
-                  {doc.name.replace(/^Dr\.?\s*/i, '').split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase()}
+                  {doc.headshot ? (
+                    <img src={doc.headshot} alt={`${doc.name} headshot`} />
+                  ) : doc.name.replace(/^Dr\.?\s*/i, '').split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase()}
                 </div>
                 <div>
                   <span className="services-doctor-name">{doc.name}</span>

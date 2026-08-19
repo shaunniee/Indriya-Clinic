@@ -201,7 +201,9 @@ function HomePage() {
                 className={`doctor-card doctor-card-link ${doctor.specialty.toLowerCase()}-bg fade-up delay-${index + 1}`}
               >
                 <div className={`doctor-avatar ${doctor.specialty.toLowerCase()}`}>
-                  {getInitials(doctor.name)}
+                  {doctor.headshot ? (
+                    <img src={doctor.headshot} alt={`${doctor.name} headshot`} />
+                  ) : getInitials(doctor.name)}
                 </div>
                 <h3>{doctor.name}</h3>
                 <p className="doctor-qualification">{doctor.qualification}</p>

@@ -52,7 +52,9 @@ function DoctorsPage() {
                   {/* Avatar */}
                   <div className="doctor-profile-avatar-wrap">
                     <div className={`doctor-profile-avatar ${doctor.specialty.toLowerCase()}`}>
-                      {getInitials(doctor.name)}
+                      {doctor.headshot ? (
+                        <img src={doctor.headshot} alt={`${doctor.name} headshot`} />
+                      ) : getInitials(doctor.name)}
                     </div>
                   </div>
 

@@ -15,12 +15,13 @@ export const doctors = [
     name: "Dr Jaswin D'Souza",
     qualification: 'MBBS, MS (ENT)',
     specialty: 'ENT',
+    headshot: '/headshots/jaswin-dsouza.jpeg',
     specialtyFull: 'ENT Specialist & Head and Neck Surgeon',
     taglineBioKey: 'doctorTaglineJaswin',
     bioKey: 'doctorBioJaswin',
     bioLongKey: 'doctorBioLongJaswin',
     department: 'ENT',
-    timings: 'Mon to Sat 2:00 PM - 8:00 PM | Sun 10:00 AM - 1:00 PM',
+    timings: 'Mon to Sat 3:00 PM - 8:00 PM | Sun 10:30 AM - 12:30 PM',
     languages: ['English', 'Kannada', 'Konkani', 'Hindi'],
     conditions: [
       'Comprehensive ENT Consultation & Endoscopic Examination',
@@ -53,7 +54,7 @@ export const doctors = [
     bioKey: 'doctorBioPsych',
     bioLongKey: 'doctorBioLongPsych',
     department: 'Psychiatry',
-    timings: 'Sat 6:00 PM - 8:30 PM | Sun 10:00 AM - 1:00 PM',
+    timings: 'Sat 6:00 PM - 8:00 PM | Sun 10:30 AM - 12:30 PM',
     languages: ['English', 'Kannada', 'Konkani', 'Hindi'],
     conditions: [
       // General Psychiatric Conditions

@@ -58,7 +58,9 @@ function DoctorDetailPage() {
           <div className="doctor-detail-hero-inner fade-up">
             {/* Avatar */}
             <div className={`doctor-detail-avatar ${doctor.specialty.toLowerCase()}`}>
-              {getInitials(doctor.name)}
+              {doctor.headshot ? (
+                <img src={doctor.headshot} alt={`${doctor.name} headshot`} />
+              ) : getInitials(doctor.name)}
             </div>
 
             {/* Text block */}
